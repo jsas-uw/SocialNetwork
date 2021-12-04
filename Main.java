@@ -26,8 +26,8 @@ public class Main extends Application {
 	// NOTE: this.getParameters().getRaw() will get these also
 	private List<String> args;
 
-	private static final int WINDOW_WIDTH = 800;
-	private static final int WINDOW_HEIGHT = 600;
+	private static final int WINDOW_WIDTH = 1000;
+	private static final int WINDOW_HEIGHT = 800;
 	private static final String APP_TITLE = "Hello JavaFX World!";
 
 	@Override
@@ -80,29 +80,39 @@ public class Main extends Application {
         	VBox vbox = new VBox();
         	vbox.getChildren().add(initButton);
 
+        //added another HBox so the labels don't
+        //throw off the button alignment
+        	
 
-
+        	
 		// Create a flow pane for the buttons
 			FlowPane flow = new FlowPane();
 			flow.setVgap(8);
      		flow.setHgap(4);
-			HBox uHBox = new HBox();
-			uHBox.getChildren().add(new Label("All Users"));
-			flow.getChildren().add(uHBox);
-			for (Button btn : list){
+     		for (Button btn : list){
 				flow.getChildren().add(btn);
 			}
+     		
+        	//Labels were throwing off the button alignment
+        	//Instead of adding the label to the flow pane
+        	//I made a V box where level 1: label
+        	//and level 2: flow pane
+			VBox uVBox = new VBox();
+			uVBox.getChildren().add(new Label("All Users"));
+			uVBox.getChildren().add(flow);
 
 		// Create a flow pane for the buttons
 			FlowPane friendsFlow = new FlowPane();
 			friendsFlow.setVgap(8);
 			friendsFlow.setHgap(4);
-			HBox fHBox = new HBox();
-			fHBox.getChildren().add(new Label("Current Friends"));
-			friendsFlow.getChildren().add(fHBox);
 			for (Button f : friends){
 				friendsFlow.getChildren().add(f);
 			}
+			
+			VBox fVBox = new VBox();
+			fVBox.getChildren().add(new Label("Current Friends"));
+			fVBox.getChildren().add(friendsFlow);
+			
 
 
 		// Main layout is Border Pane example (top,left,center,right,bottom)
@@ -111,8 +121,8 @@ public class Main extends Application {
 
 		// Add the vertical box to the center of the root pane
 			root.setTop(new Label("This is the root.setTop"));
-			ScrollPane scrollPane = new ScrollPane(flow);
-			ScrollPane fScrollPane = new ScrollPane(friendsFlow);
+			ScrollPane scrollPane = new ScrollPane(uVBox);
+			ScrollPane fScrollPane = new ScrollPane(fVBox);
 			scrollPane.setFitToWidth(true);
 			fScrollPane.setFitToWidth(true);
         	root.setLeft(vbox);
