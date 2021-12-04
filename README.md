@@ -1,5 +1,7 @@
 # SocialNetwork
+Added Will's main method from canvas files
 
+# Graph
 https://github.com/jsas-uw/p4-graph
 I made a repo for my graph program. 
 Since its not using hash tables it may be 
