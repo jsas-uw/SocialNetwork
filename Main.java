@@ -15,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -73,18 +74,13 @@ public class Main extends Application {
 					"-fx-max-height: 75px;"
 			);
 			friends.add(roundButton);
-			}
+		}
 
 
 		// Create a vertical box
         	VBox vbox = new VBox();
         	vbox.getChildren().add(initButton);
 
-        //added another HBox so the labels don't
-        //throw off the button alignment
-        	
-
-        	
 		// Create a flow pane for the buttons
 			FlowPane flow = new FlowPane();
 			flow.setVgap(8);
@@ -113,14 +109,47 @@ public class Main extends Application {
 			fVBox.getChildren().add(new Label("Current Friends"));
 			fVBox.getChildren().add(friendsFlow);
 			
-
+		// Top:
+		// Loosely speaking this is going to be an array
+		// Base is a vbox with an hbox for each rows.
+		// I resized the window, Should be big enough to fit
+		// the friend search and actions on a single line
+			VBox topVBox = new VBox();
+			HBox top1HBox = new HBox();
+			HBox top2HBox = new HBox();
+			topVBox.getChildren().add(top1HBox);
+			topVBox.getChildren().add(top2HBox);
+			
+		//top line 1:
+			//import
+			top1HBox.getChildren().add(new Button("Import file"));
+			TextField importField = new TextField();
+			top1HBox.getChildren().add(importField);
+			
+			//save
+			top1HBox.getChildren().add(new Button("Save file"));
+			TextField saveField = new TextField();
+			top1HBox.getChildren().add(saveField);
+		
+		//top line 2:
+			//friend search
+			top2HBox.getChildren().add(new Button("Search User"));
+			TextField friendField = new TextField();
+			top2HBox.getChildren().add(friendField);
+			top2HBox.getChildren().add(new Button("Add User"));
+			top2HBox.getChildren().add(new Button("Add Friend"));
+			top2HBox.getChildren().add(new Button("Find Shared Friends"));
+			top2HBox.getChildren().add(new Button("Find Shortest Path Between Users"));
+			
+			
+		//Bottom
 
 		// Main layout is Border Pane example (top,left,center,right,bottom)
         	BorderPane root = new BorderPane();
 
 
 		// Add the vertical box to the center of the root pane
-			root.setTop(new Label("This is the root.setTop"));
+			root.setTop(topVBox);
 			ScrollPane scrollPane = new ScrollPane(uVBox);
 			ScrollPane fScrollPane = new ScrollPane(fVBox);
 			scrollPane.setFitToWidth(true);
