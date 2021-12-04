@@ -1,13 +1,14 @@
 # SocialNetwork
 Added Will's main method from canvas files
+
 Modified the border pane to mock up the GUI
 
 Todo:
-add the graph data structure
-parse input files into the graph
-use the graph to populate the flow panes
+- add the graph data structure
+- parse input files into the graph
+- use the graph to populate the flow panes
 (right now the buttons are all from hardcoded lists)
-Make the buttons work
+- Make the buttons work
 
 # Graph
 https://github.com/jsas-uw/p4-graph
