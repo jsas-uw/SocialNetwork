@@ -1,5 +1,5 @@
 # SocialNetwork
-Added Will's main method from canvas files
+Added Bill's main method from canvas files
 
 Modified the border pane to mock up the GUI
 
