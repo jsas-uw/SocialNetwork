@@ -6,6 +6,10 @@
     -fx-my-menu-font-color-highlighted: #FFFFFF; /* Change according to your needs */
 }
 
+.button {
+    -fx-background-color: #19b3e2; 
+}
+
 /* MENU BAR + Top-level MENU BUTTONS */
 /*** The menu bar itself ***/    
 .menu-bar {
@@ -70,9 +74,5 @@
 /* CONTEXT MENU */
 /*** The context menu that contains a menu's menu items ***/  
 .context-menu {
-    -fx-background-color: -fx-my-menu-color; 
-}
-
-.button {
     -fx-background-color: -fx-my-menu-color; 
 }

@@ -6,6 +6,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 
 public class SocialNetMenu {
@@ -15,10 +16,14 @@ public class SocialNetMenu {
         HBox menuHbox = new HBox();
         // label to display events
 		Label l = new Label("\t\t\t\t" + "no menu item selected");
+		
         // text field for user parameter
         TextField userParameter = new TextField();
         userParameter.setPromptText("enter user then select menu command"); //to set the hint text
         userParameter.setPrefWidth(250);
+		userParameter.setId("USERPARAMETER");
+		userParameter.setOnAction(Main.ListenerClass.txtFieldEvent());
+		userParameter.addEventHandler(KeyEvent.KEY_RELEASED, Main.ListenerClass.eventHandlerTextFieldKeyReleased);
 
         // create a File menu
 		Menu fileMenu = new Menu("File");

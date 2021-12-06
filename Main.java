@@ -23,7 +23,9 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -42,6 +44,7 @@ public class Main extends Application {
 	private static final String APP_TITLE = "Hello CS400 Social Network World!";
 
 	static Label hiddenLabel = new Label("CS400");
+	static Label menuUserParameter = new Label(""); // this is set by event handler for key presses in the menu
 	static Button initButton = new RoundButton(hiddenLabel.getText());
 	
 	// Main layout is Border Pane example (top,left,center,right,bottom)
@@ -53,6 +56,32 @@ public class Main extends Application {
 	// an inner class to handle the menu actions and rounded pushbutton actions
 	public static class ListenerClass {
 
+		//Handling the key typed event 
+		static EventHandler<KeyEvent> eventHandlerTextFieldKeyReleased = new EventHandler<KeyEvent>() { 
+			@Override 
+			public void handle(KeyEvent event) { 
+				if (((TextField)event.getSource()).getId() == "USERPARAMETER"){
+					menuUserParameter.setText(((TextField)event.getSource()).getText());
+					Main.root.setBottom(new Label("The Value of the Target User Parameter: " + menuUserParameter.getText()));
+					// comment in the next two lines if you want to see this working
+					//Alert alertTxtFieldChanged = new Alert(AlertType.INFORMATION, menuUserParameter.getText(), ButtonType.OK);
+					//alertTxtFieldChanged.showAndWait();		
+				} 
+			}           
+		 };
+
+		public static EventHandler<ActionEvent> txtFieldEvent() {
+			return new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent t) {
+	
+					if (((TextField)t.getSource()).getId() == "USERPARAMETER"){
+						Alert alertTxtFieldChanged = new Alert(AlertType.INFORMATION, "user param changed", ButtonType.OK);
+						alertTxtFieldChanged.showAndWait();
+					}
+				}
+			};
+		}
+
 		public static EventHandler<ActionEvent> menuCmdEvent() {
 			return new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent t) {
@@ -61,6 +90,7 @@ public class Main extends Application {
 						BuildRightPane buildRightPane = new BuildRightPane();
 						Main.root.setRight(buildRightPane.getPane(new ArrayList<Button>()));
 					}
+					
 				}
 			};
 		}

@@ -11,7 +11,7 @@ import javafx.scene.layout.StackPane;
 
 public class BuildCenterPane {
 
-	Button roundButton = new Button();
+	RoundButton roundButton = new RoundButton();
 	List<Button> friends = new ArrayList<Button>();
 	ScrollPane centerPane = new ScrollPane(null);
 
@@ -20,8 +20,8 @@ public class BuildCenterPane {
 		// this.friends = _friends;
 
     	for (int f = 0 ; f < 10 ; f++){
-			roundButton = new Button();
-			roundButton.setId("fabulouslyGreat"+f);
+			roundButton = new RoundButton("friend"+f);
+			roundButton.setId("friend"+f);
 			roundButton.textProperty().set(roundButton.getId());
 			roundButton.setStyle(
 					"-fx-background-radius: 5em; " +
