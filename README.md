@@ -1,6 +1,6 @@
 # SocialNetwork
 Created "Combined" branch with all files.
-I added a class for the bottom pane based on the original GUI mockup.
+I added a class for the bottom pane based on the original GUI mockup. I also added a file field since that seemed easier than trying to update the "user" label depending on context. Every action should be based on a user or a file so that covers the GUI.
 
 Modified the menu/cmdEnum to include remaining functions
 
@@ -10,6 +10,7 @@ Todo: Main thing is hooking everything together so this actually works. With the
 - use the graph to populate the flow panes
 (right now the buttons are all from hardcoded lists)
 - Make the buttons work
+(Show all users is the only one with a built out event handler)
 - Remy has to add a final function for the SocialNetworkADT to get Shortest path between friends
 
 For reference: SocialNetMenu calls event listeners in the ListenerClass subclass of Main. 
