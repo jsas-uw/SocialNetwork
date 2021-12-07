@@ -1,15 +1,23 @@
 # SocialNetwork
-Created "Combined" branch with all files
+Created "Combined" branch with all files.
+I added a class for the bottom pane based on the GUI mockup in the main brach.
 
 Modified the menu/cmdEnum to include remaining functions
 
-Todo:
+Will made changes in a seperate repo, looks like mainly color/css changes? https://github.com/bill-wisc/src
+
+Todo: Main thing is hooking everything together so this actually works. With the bottom pane/menu updates the GUI should at least look functional so updates there should be secondary.
 - use the graph to populate the flow panes
 (right now the buttons are all from hardcoded lists)
 - Make the buttons work
 - Remy has to add a final function for the SocialNetworkADT to get Shortest path between friends
 
-Thoughts: to avoid dealing with resizing the circular pane for friends we could do everything in center. Right now the show all users option opens in the right pane. 
+For reference: SocialNetMenu calls event listeners in the ListenerClass subclass of Main. 
+From Main we still need to instantiate a SocialNetworkManager
+which should be able to initalize a graph based on a file
+and handle making the calls to modify the graph. 
+Then listeners trigger events which use the SocialNetworkManager to modify the graph
+and make calls to rebuild the panes.
 
 # Graph
 
