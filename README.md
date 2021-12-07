@@ -1,6 +1,6 @@
 # SocialNetwork
 Created "Combined" branch with all files.
-I added a class for the bottom pane based on the GUI mockup in the main brach.
+I added a class for the bottom pane based on the original GUI mockup.
 
 Modified the menu/cmdEnum to include remaining functions
 
