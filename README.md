@@ -2,9 +2,12 @@
 Created "Combined" branch with all files.
 I added a class for the bottom pane based on the original GUI mockup. I also added a file field since that seemed easier than trying to update the "user" label depending on context. Every action should be based on a user or a file so that covers the GUI.
 
+- Adding a File field sounds good, and before the final due date I hope to get a File Picker to work for both the load and save. -Bill 20211207
+
+
 Modified the menu/cmdEnum to include remaining functions
 
-Will made changes in a seperate repo, looks like mainly color/css changes? https://github.com/bill-wisc/src
+Bill made changes in a seperate repo, looks like mainly color/css changes? https://github.com/bill-wisc/src - This is my own sandbox. Anything that should go into main, I will put in a branch on John's Repo. -Bill 20211207
 
 Todo: Main thing is hooking everything together so this actually works. With the bottom pane/menu updates the GUI should at least look functional so updates there should be secondary.
 - use the graph to populate the flow panes
@@ -19,6 +22,8 @@ which should be able to initalize a graph based on a file
 and handle making the calls to modify the graph. 
 Then listeners trigger events which use the SocialNetworkManager to modify the graph
 and make calls to rebuild the panes.
+
+The ListenerClass should probably move over to the SocialNetworkManager class and the .setOnAction(...) instructions be refactored to call SocialNetworkManager.ListenerClass... -Bill 20211207
 
 # Graph
 
