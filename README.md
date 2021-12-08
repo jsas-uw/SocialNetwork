@@ -23,7 +23,13 @@ and handle making the calls to modify the graph.
 Then listeners trigger events which use the SocialNetworkManager to modify the graph
 and make calls to rebuild the panes.
 
+I was playing with event handlers to see if I could get it to accept a file.
+The file input field works the same as user. The issue is the load file button isn't getting triggered like add user.
+I modeled the load file event handler after add user and its just a second if statement in listener / menuCmdEvent/
+
 The ListenerClass should probably move over to the SocialNetworkManager class and the .setOnAction(...) instructions be refactored to call SocialNetworkManager.ListenerClass... -Bill 20211207
+
+Before class today we can discuss refactors. Before we implement too many buttons I think we should make sure the class structure makes sense.
 
 # Graph
 
