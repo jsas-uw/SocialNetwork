@@ -93,7 +93,7 @@ public class SocialNetMenu {
 	                        " with ID: " + ((MenuItem)e.getSource()).getId(); 
 					l.setText(label);
 					System.out.println(label);
-					u3.setOnAction(Main.ListenerClass.menuCmdEvent(userParameter.getText()));
+					//u3.setOnAction(Main.ListenerClass.menuCmdEvent(userParameter.getText()));
 				}
 				
 				if (((MenuItem)e.getSource()).getId().equals(CmdEnum.LOADFILE.toString())){
@@ -103,7 +103,7 @@ public class SocialNetMenu {
 							"\n\t selected" + " with file: " + fileParameter.getText();
 					l.setText(label);
 					System.out.println(label);
-					f2.setOnAction(Main.ListenerClass.menuCmdEvent(fileParameter.getText())); //LOADFILE
+					//f2.setOnAction(Main.ListenerClass.menuCmdEvent(fileParameter.getText())); //LOADFILE
 				}
 			}
 		};
@@ -114,11 +114,11 @@ public class SocialNetMenu {
 
 		// add events -- the event handler is for dev purposes only
 		f1.setOnAction(event);
-		//f2.setOnAction(Main.ListenerClass.menuCmdEvent()); //LOADFILE
+		f2.setOnAction(Main.ListenerClass.menuCmdEvent()); //LOADFILE
 		f3.setOnAction(event);
         u1.setOnAction(event);
 		u2.setOnAction(event);
-		//u3.setOnAction(Main.ListenerClass.menuCmdEvent()); //USERADD
+		u3.setOnAction(Main.ListenerClass.menuCmdEvent()); //USERADD
         c1.setOnAction(event);
 		c2.setOnAction(event);
 		c3.setOnAction(event);

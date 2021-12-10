@@ -174,11 +174,13 @@ public class Graph implements GraphADT {
 		
 		if (temp1 != null && !temp1.contains(vertex2)) {
 			temp1.add(vertex2);
+			//graphNodes.add(temp1);
 			size++;
 		}
 		
 		if (temp2 != null && !temp2.contains(vertex1)) {
 			temp2.add(vertex1);
+			//graphNodes.add(temp2);
 			size++;
 		}
 
@@ -220,16 +222,29 @@ public class Graph implements GraphADT {
 			}
 		}
 		
+		//For p4 the graph  was directed
+		//Needed to update this to remove user1
+		//from the user2's friend list
+		LinkedList<String> temp2 = null; 
+		for (LinkedList<String> l : graphNodes) {
+			if (l.getFirst().equals(vertex2)) {
+				temp2 = l;
+			}
+		}
+		
+		if (temp2 != null) {
+			if(temp2.remove(vertex1)) {
+				size--;
+			}
+		}
 	} //method	
-
-	//also we should get working on unit tests
 	
 	/**
      * Returns a Set that contains all the vertices
      * 
 	 */
-	public Set<String> getAllVertices() {
-		TreeSet<String> vertices = new TreeSet<String>();
+	public List<String> getAllVertices() {
+		ArrayList<String> vertices = new ArrayList<String>();
 		
 		/*
 		 * best practice, don't return null,

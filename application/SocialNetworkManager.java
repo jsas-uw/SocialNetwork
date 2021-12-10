@@ -12,31 +12,15 @@ import java.util.Set;
 
 
 /**
- * Filename:   PackageManager.java
- * Project:    p4
- * Authors:    John Sas
+ * Filename:   SocialNetworkManager.java
+ * Project:    A3
  * 
- * PackageManager is used to process json package dependency files
- * and provide function that make that information available to other users.
+ * SocialNetworkManager handles data storage for the
+ * social network application
  * 
- * Each package that depends upon other packages has its own
- * entry in the json file.  
+ * It can initialize a graph to store users and their
+ * friends from a file or GUI input.
  * 
- * Package dependencies are important when building software, 
- * as you must install packages in an order such that each package 
- * is installed after all of the packages that it depends on 
- * have been installed.
- * 
- * For example: package A depends upon package B,
- * then package B must be installed before package A.
- * 
- * This program will read package information and 
- * provide information about the packages that must be 
- * installed before any given package can be installed.
- * all of the packages in
- * 
- * You may add a main method, but we will test all methods with
- * our own Test classes.
  */
 
 public class SocialNetworkManager {
@@ -44,9 +28,11 @@ public class SocialNetworkManager {
     private Graph graph;
     static ArrayList<Package> packages;
     private ArrayList<String> commandLog;
+    public Main main = new Main();
+    
 
     /*
-     * Package Manager default no-argument constructor.
+     * Network Manager default no-argument constructor.
      */
     public SocialNetworkManager() {
         this.graph = new Graph();
@@ -55,17 +41,25 @@ public class SocialNetworkManager {
     
     /*
      * constructGraph is really two methods
-     * spin off parseJSON to create an ArrayList 
-     * of packages, then from that you can create the graph
+     * spin off parse to create an ArrayList 
+     * (does this still make sense?) 
+     * of users, then from that you can create the graph
      */
     
     /**
-     * Takes in a file path for a json file and builds the
-     * package dependency graph from it. 
+     * Takes in a file path and builds the
+     * network graph from it. 
      * 
-     * @param jsonFilepath the name of json data file with package dependency information
+     * Note the file needs to be formated as
+     * described in the Social Network Visualizer F2021
+     * assignment or it won't parse
+     * 
+     * @param filePath the name of .txt file
      * @throws FileNotFoundException if file path is incorrect
      * @throws IOException if the give file cannot be read
+     * 
+     * //might want to replace this with a custom exception
+     * that could trigger and alert or something
      * @throws ParseException if the given json cannot be parsed 
      */
     public void loadFile(String filePath) throws FileNotFoundException, IOException
@@ -82,7 +76,13 @@ public class SocialNetworkManager {
 			logCommand(inCommand);
 			
 		}
-		// Close the new instances		
+		// Close the new instances	
+		
+		//added breakpoint to check graph after file initialization
+		//graph looked fine, issue was user button
+		//need to build the pane with an array list of eddies friends
+		System.out.println("Break");
+		
 		scanIn.close();
     	
     }
@@ -95,23 +95,35 @@ public class SocialNetworkManager {
     	// Split the commands up to usable entries.
     	String[] splitStr = command.split("\\s+");
     	
-    	// If the first piece is S or null, GUI handles the action, so quit
-    	if (splitStr[0] == null || splitStr[0] == "s")
+    	// If the first piece is null quit
+    	if (splitStr[0].equals(null)) {
     		return;
+    	}
+    	
+    	//created setUserButton in main
+		//based on userButtonClickEvent from listener
+		//I separated it since its not triggered by
+		//an event, just a method call
+    	if (splitStr[0].equals("s")) {
+    		System.out.println(splitStr[1]);
+    		main.setUserButton(splitStr[1], graph.getAdjacentVerticesOf(splitStr[1]));
+    	}
     	
     	// If the first piece is a, add the edge or vertex to the graph
-    	if (splitStr[0] == "a")
+    	if (splitStr[0].equals("a"))
     	{
-    		if (splitStr[2] == null)
+    		//use string.length, string[2] causes an index out of bounds
+    		//error if there's only one user
+    		if (splitStr.length == 2) 
     			graph.addVertex(splitStr[1]);
     		else
     			graph.addEdge(splitStr[1],splitStr[2]);
     	}
     	
     	// If the first piece is r, remove the edge or vertex (and edges) of the graph
-    	if (splitStr[0] == "r")
+    	if (splitStr[0].equals("r"))
     	{
-    		if (splitStr[2] == null)
+    		if (splitStr.length == 1)
     			graph.removeVertex(splitStr[1]);
     		else
     			graph.removeEdge(splitStr[1],splitStr[2]);
@@ -173,7 +185,7 @@ public class SocialNetworkManager {
      * 
      * @return Set<String> of all the packages
      */
-    public Set<String> getAllPeople() {    	
+    public List<String> getAllPeople() {    	
     	return graph.getAllVertices();
     }
     
@@ -210,7 +222,7 @@ public class SocialNetworkManager {
     // Get number of connected components
     public int numConnections(){
     	int count = 0;
-    	Set<String> allPeople = this.getAllPeople();
+    	List<String> allPeople = this.getAllPeople();
     	List<String> searchedPeople = new ArrayList<String>();
     	List<String> currSearchPeople = new ArrayList<String>();
     	

@@ -49,10 +49,12 @@ public class Main extends Application {
 	static Label menuUserParameter = new Label(""); // this is set by event handler for key presses in the menu
 	static Label menuFileParameter = new Label("");
 	static Button initButton = new RoundButton(hiddenLabel.getText());
+	static BuildCenterPane centerPane;
+	static BuildRightPane rightPane;
 	
 	// Main layout is Border Pane example (top,left,center,right,bottom)
 	static BorderPane root = new BorderPane();
-	static ScrollPane rightPane = new ScrollPane();
+	//static ScrollPane rightPane = new ScrollPane();
 
 	public SocialNetMenu menuBar = new SocialNetMenu();
 	
@@ -96,28 +98,21 @@ public class Main extends Application {
 			};
 		}
 
-		public static EventHandler<ActionEvent> menuCmdEvent(String parameter) {
+		public static EventHandler<ActionEvent> menuCmdEvent() {
 			return new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent t) {
 					if (((MenuItem)t.getSource()).getId() == CmdEnum.USERSHOWALL.toString()){
 						// Create a flow pane for the buttons
-						BuildRightPane buildRightPane = new BuildRightPane();
+						
 						BuildBottomPane buildBottomPane = new BuildBottomPane();
-						Main.root.setRight(buildRightPane.getPane(new ArrayList<Button>(), CmdEnum.USERSHOWALL.toString()));
+						Main.root.setRight(rightPane.getPane(netManager.getAllPeople(), CmdEnum.USERSHOWALL.toString()));
 						Main.root.setBottom(buildBottomPane.getBottom("Showing all network users"));
 					}
 					
-					/*
-					 * not sure why the LOADFILE isn't working
-					 * I tried .equals to see if that makes a difference (it didn't)
-					 * it should have at least threw the file not found exception
-					 * Since it didn't we need to check line ~85 on SocialNetMenu
-					 * The event handler there probably isn't calling into main....
-					 */
 					if (((MenuItem)t.getSource()).getId().equals(CmdEnum.LOADFILE.toString())){
 						// Calls into SocialNetworkManager netManager
 						try {
-							netManager.loadFile(parameter);
+							netManager.loadFile(menuFileParameter.getText());
 						} catch (FileNotFoundException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -127,30 +122,65 @@ public class Main extends Application {
 						}
 						
 						BuildBottomPane buildBottomPane = new BuildBottomPane();
-						
-						Main.root.setBottom(buildBottomPane.getBottom("Loaded file: " + parameter));
-					}
+						Main.root.setBottom(buildBottomPane.getBottom("Loaded file: " + menuFileParameter.getText()));
+					} //end LOADFILE
 					
 				}
 			};
-		}
+		} 
 
 		public static EventHandler<ActionEvent> userButtonClickEvent() {
 			return new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent rb) {
 					Button tempButton = (Button)rb.getTarget();
 					hiddenLabel.setText(tempButton.getId());
-					initButton.setText(tempButton.getId());
+					initButton.setText(tempButton.getText());
 					initButton.setId(tempButton.getId());
-					// build/refresh the center pane
-					BuildCenterPane buildCenterPane = new BuildCenterPane();
-					Main.root.setRight(buildCenterPane.getPane(new ArrayList<Button>()));
-					}
-				};
+					//refresh the center pane
+					//In BuildCenterPane get pane handles the buttons
+					//so all we need to do here is pass in the list of friends
+					Main.root.setRight(centerPane.getPane(netManager.getFriends(initButton.getText())));
+				}
 			};
+		};
+	} //listener class
+		
+	/**
+	 * Implements the "s" command from the input file
+	 * @param user
+	 */
+	public void setUserButton(String user, List<String> friends) {
+		Button tempButton = new Button();
+		hiddenLabel.setText(tempButton.getId()); //debug statement?
+		initButton.setText(user);
+		initButton.setId(tempButton.getId());
+		// build/refresh the center pane
+		BuildCenterPane buildCenterPane = new BuildCenterPane();
+		
+		//debug loop
+		System.out.println("Set user friend list");
+		for(String f: friends) {
+			System.out.print(f+", ");
 		}
-		
-		
+		System.out.println(); //end debug statements
+		Main.root.setRight(buildCenterPane.getPane(friends));
+		this.buildLeft();
+	}
+	
+	/**
+	 * As always this is quick and dirty
+	 * could refactor so the vBox and scroll pane
+	 * are class variables so you don't need to create
+	 * them every time
+	 */
+	public void buildLeft() {
+		// Create a vertical box 
+    	VBox vbox = new VBox();
+    	vbox.getChildren().add(initButton);
+    	ScrollPane leftPane = new ScrollPane(vbox);	
+    	root.setLeft(leftPane);
+    	
+	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -167,17 +197,13 @@ public class Main extends Application {
                 "-fx-max-height: 75px;"
         );		
 		
-			
-			// Create a vertical box 
-        	VBox vbox = new VBox();
-        	vbox.getChildren().add(initButton);
-        	ScrollPane leftPane = new ScrollPane(vbox);	
-
-			// Add the vertical box to the center of the root pane
-			root.setTop(this.menuBar.getMenu());
-        	root.setLeft(leftPane);
-			root.setRight(null);
-			root.setBottom(new Label("This is the root.setBottom"));
+        //initializes BuildCenterPane
+        centerPane = new BuildCenterPane();
+        rightPane = new BuildRightPane();
+    	this.buildLeft();
+    	root.setTop(this.menuBar.getMenu());
+		root.setRight(null);
+		root.setBottom(new Label("This is the root.setBottom"));
 
 		Scene mainScene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 		mainScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());

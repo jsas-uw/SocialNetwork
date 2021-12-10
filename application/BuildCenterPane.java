@@ -17,7 +17,7 @@ public class BuildCenterPane {
 	RoundButton roundButton = new RoundButton();
 	List<Button> friends = new ArrayList<Button>();
 	ScrollPane centerPane = new ScrollPane(null);
-
+	
 	/*
 	 * refactored to use a VBox,
 	 * Label is on top 
@@ -29,16 +29,22 @@ public class BuildCenterPane {
 	//so USERSHOWALL would call it with 
 	//Label = "All Users"
 	
-	//public ScrollPane getPane(List<Button> _friends, String Label) {
-	//then replace the hard coded strings with the label variable.
-	
-	public ScrollPane getPane(List<Button> _friends) {
+	/**
+	 * Adds more buttons to friends if needed,
+	 * otherwise it just updates the label text
+	 * 
+	 * @param _friendsString (adjacency list of friends)
+	 * @return ScrollPane
+	 */
+	public ScrollPane getPane(List<String> _friendsString) {
 
 		// this.friends = _friends;
-
-    	for (int f = 0 ; f < 10 ; f++){
-			roundButton = new RoundButton("friend"+f);
-			roundButton.setId("friend"+f);
+		
+		//check size of button array
+		//if less than friends initialize more buttons
+		for (int i = friends.size(); i < _friendsString.size(); i++) {
+			roundButton = new RoundButton("");
+			roundButton.setId(""+i);
 			roundButton.textProperty().set(roundButton.getId());
 			roundButton.setStyle(
 					"-fx-background-radius: 5em; " +
@@ -49,20 +55,39 @@ public class BuildCenterPane {
 			);
 			roundButton.setOnAction(Main.ListenerClass.userButtonClickEvent());
 			friends.add(roundButton);
-			}
+		}
+		
+		int j = 0; //counter to loop through friend buttons
+    	for (String f:_friendsString){
+    		friends.get(j).setText(f);
+    		j++;
+		}
 
+    	/*
+    	 * circle pane needs to be fixed
+    	 * for some reason the fourth friend gets cutoff
+    	 * its working correctly because you can set 
+    	 * friend size to 1 and the flow pane shows all 
+    	 * four friends...
+    	 */
+    	
 		// Create a flow pane for the buttons
 		if (friends.size()<=10){
 			CircularPane friendsFlow = new CircularPane();
 			VBox fVBox = new VBox();
 			fVBox.getChildren().add(new Label("Current Friends"));
-			
+			System.out.println("\nButton Labels:");//debug
 			for (Button f : friends){
-				friendsFlow.getChildren().add(f);
+				if (!f.getText().equals("")) {
+					friendsFlow.getChildren().add(f);
+					System.out.print(f.getText() + ", "); //debug
+				}
 			}
-			StackPane stackPane = new StackPane(friendsFlow, new Label(Main.hiddenLabel.getText()));
+			StackPane stackPane = new StackPane(friendsFlow);
             StackPane.setAlignment(friendsFlow, Pos.CENTER);
 			ScrollPane fScrollPane = new ScrollPane(stackPane);
+			
+			
 			fScrollPane.setFitToWidth(true);
 			
 			fVBox.getChildren().add(fScrollPane);
@@ -74,9 +99,10 @@ public class BuildCenterPane {
 			friendsFlow.setHgap(4);
 			VBox fVBox = new VBox();
 			fVBox.getChildren().add(new Label("Current Friends"));
-			friendsFlow.getChildren().add(fVBox);
+			fVBox.getChildren().add(friendsFlow);
 			for (Button f : friends){
-				friendsFlow.getChildren().add(f);
+				if (!f.getText().equals(""))
+					friendsFlow.getChildren().add(f);
 			}
 			ScrollPane fScrollPane = new ScrollPane(friendsFlow);
 			fScrollPane.setFitToWidth(true);
