@@ -1,7 +1,7 @@
 # SocialNetwork
 
 # Remy's tasks
-- Shortest path algorithmn
+- Shortest path algorithm
 -
 
 # John's tasks
