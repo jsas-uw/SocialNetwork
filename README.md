@@ -1,13 +1,26 @@
 # SocialNetwork
+
+# Remy's tasks
+- Shortest path algorithmn
+-
+
+# John's tasks
 Created "Combined" branch with all files.
 I added a class for the bottom pane based on the original GUI mockup. I also added a file field since that seemed easier than trying to update the "user" label depending on context. Every action should be based on a user or a file so that covers the GUI.
-
-- Adding a File field sounds good, and before the final due date I hope to get a File Picker to work for both the load and save. -Bill 20211207
-
-
 Modified the menu/cmdEnum to include remaining functions
 
-Bill made changes in a seperate repo, looks like mainly color/css changes? https://github.com/bill-wisc/src - This is my own sandbox. Anything that should go into main, I will put in a branch on John's Repo. -Bill 20211207
+
+# Bill's tasks
+- Today 
+-     built the executable .jar; works on my machine and runs with the batch file; put the zip in email and canvas files;
+- Next.
+-     I have the day off Friday 12/10. I will be working on displaying actual buttons from the Graph data by using a HashMap to cache user buttons.
+-     Will not need to have Remy change the backend. Returning a List<String> will be good. I'll do the conversion in a "UserButtonFactory" class.
+- Later (if no one gets to it first)
+-     I hope to get a File Picker to work for both the load and save. -Bill 20211207
+
+
+
 
 Todo: Main thing is hooking everything together so this actually works. With the bottom pane/menu updates the GUI should at least look functional so updates there should be secondary.
 - use the graph to populate the flow panes
