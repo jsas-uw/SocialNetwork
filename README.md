@@ -6,6 +6,11 @@
 
 # John's tasks
 Still working off the "Combined" branch with all files (Looks like there's someover lap with what I did and what Bill's working on so I don't want to push to main just yet) - 12/10/2021
+
+To run application, follow the helloFx directions exactly. I think the source folder causes issues because it tries to create a default package. When I created the project with src and bin in the same folder it stopped giving me issues with the pacakge. Once the project is setup you should be able to download the combined branch and do a paste/replace all for the application folder in helloFX.
+
+Updates 12/10/2021:
+
 I added a class for the bottom pane based on the original GUI mockup. I also added a file field since that seemed easier than trying to update the "user" label depending on context. Every action should be based on a user or a file so that covers the GUI.
 
 I got it to use the graph to populate the buttons. Show all users and load file will display actual users now. logCommand parses everything from the input files and updates the graph correctly.
