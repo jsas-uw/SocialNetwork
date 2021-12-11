@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
-
 /**
  * Filename:   SocialNetworkManager.java
  * Project:    A3
@@ -28,11 +27,9 @@ public class SocialNetworkManager {
     private Graph graph;
     static ArrayList<Package> packages;
     private ArrayList<String> commandLog;
-    public Main main = new Main();
-    
 
     /*
-     * Network Manager default no-argument constructor.
+     * Package Manager default no-argument constructor.
      */
     public SocialNetworkManager() {
         this.graph = new Graph();
@@ -41,25 +38,17 @@ public class SocialNetworkManager {
     
     /*
      * constructGraph is really two methods
-     * spin off parse to create an ArrayList 
-     * (does this still make sense?) 
-     * of users, then from that you can create the graph
+     * spin off parseJSON to create an ArrayList 
+     * of packages, then from that you can create the graph
      */
     
     /**
-     * Takes in a file path and builds the
-     * network graph from it. 
+     * Takes in a file path for a json file and builds the
+     * package dependency graph from it. 
      * 
-     * Note the file needs to be formated as
-     * described in the Social Network Visualizer F2021
-     * assignment or it won't parse
-     * 
-     * @param filePath the name of .txt file
+     * @param jsonFilepath the name of json data file with package dependency information
      * @throws FileNotFoundException if file path is incorrect
      * @throws IOException if the give file cannot be read
-     * 
-     * //might want to replace this with a custom exception
-     * that could trigger and alert or something
      * @throws ParseException if the given json cannot be parsed 
      */
     public void loadFile(String filePath) throws FileNotFoundException, IOException
@@ -76,13 +65,7 @@ public class SocialNetworkManager {
 			logCommand(inCommand);
 			
 		}
-		// Close the new instances	
-		
-		//added breakpoint to check graph after file initialization
-		//graph looked fine, issue was user button
-		//need to build the pane with an array list of eddies friends
-		System.out.println("Break");
-		
+		// Close the new instances		
 		scanIn.close();
     	
     }
@@ -105,8 +88,8 @@ public class SocialNetworkManager {
 		//I separated it since its not triggered by
 		//an event, just a method call
     	if (splitStr[0].equals("s")) {
-    		System.out.println(splitStr[1]);
-    		main.setUserButton(splitStr[1], graph.getAdjacentVerticesOf(splitStr[1]));
+    		System.out.println("Set Central User: " + splitStr[1]);
+    		Main.ListenerClass.SetCentralUser(splitStr[1]);
     	}
     	
     	// If the first piece is a, add the edge or vertex to the graph
@@ -123,7 +106,7 @@ public class SocialNetworkManager {
     	// If the first piece is r, remove the edge or vertex (and edges) of the graph
     	if (splitStr[0].equals("r"))
     	{
-    		if (splitStr.length == 1)
+    		if (splitStr.length == 2)
     			graph.removeVertex(splitStr[1]);
     		else
     			graph.removeEdge(splitStr[1],splitStr[2]);
@@ -178,14 +161,53 @@ public class SocialNetworkManager {
  		pwOut.close();	
     }
     
+	/**
+     * Frontend Helper method to add user to the graph.
+     *
+     */
+    public void addUser(String user) { 
+		this.graph.addVertex(user);
+    }
+
+	/**
+     * Frontend Helper method to add connection to the graph.
+     *
+     */
+    public void addConnection(String user1, String user2) { 
+		this.graph.addEdge(user1, user2);
+    }
+
+	/**
+     * Frontend Helper method to remove user from the graph.
+     *
+     */
+    public void removeUser(String user) { 
+		this.graph.removeVertex(user);
+    }
+
+	/**
+     * Frontend Helper method to remove connection from the graph.
+     *
+     */
+    public void removeConnection(String user1, String user2) { 
+		this.graph.removeEdge(user1, user2);
+    }
     
+	/**
+     * Frontend Helper method to get shortest path from the graph.
+     *
+     */
+    public void getShortestPath(String user1, String user2) { 
+		// TODO: build out shortest path algorithm here
+		/// this.graph.[add function call here](user1, user2);
+    }
     
     /**
-     * Helper method to get all packages in the graph.
+     * Frontend Helper method to get all packages in the graph.
      * 
      * @return Set<String> of all the packages
      */
-    public List<String> getAllPeople() {    	
+    public Set<String> getAllPeople() {    	
     	return graph.getAllVertices();
     }
     
@@ -222,7 +244,7 @@ public class SocialNetworkManager {
     // Get number of connected components
     public int numConnections(){
     	int count = 0;
-    	List<String> allPeople = this.getAllPeople();
+    	Set<String> allPeople = this.getAllPeople();
     	List<String> searchedPeople = new ArrayList<String>();
     	List<String> currSearchPeople = new ArrayList<String>();
     	
