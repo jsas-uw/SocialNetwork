@@ -197,9 +197,10 @@ public class SocialNetworkManager {
      * Frontend Helper method to get shortest path from the graph.
      *
      */
-    public void getShortestPath(String user1, String user2) { 
+    public List<String> getShortestPath(String user1, String user2) { 
 		// TODO: build out shortest path algorithm here
 		/// this.graph.[add function call here](user1, user2);
+	    return new ArrayList<String>;
     }
     
     /**
