@@ -13,6 +13,7 @@ public class RoundButton extends Button {
         Tooltip tool=new Tooltip();   
         tool.setText("tbd");  
         this.setTooltip(tool);
+        this.getStyleClass().add("my-round-user-button-class");	
         this.setStyle(
 					"-fx-background-radius: 5em; " +
 					"-fx-min-width: 75px; " +
@@ -28,7 +29,7 @@ public class RoundButton extends Button {
         Tooltip tool=new Tooltip();   
         tool.setText(s);  
         this.setTooltip(tool);
-        
+        this.getStyleClass().add("my-round-user-button-class");
         this.setStyle(
 					"-fx-background-radius: 5em; " +
 					"-fx-min-width: 75px; " +
