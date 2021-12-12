@@ -10,8 +10,18 @@
     -fx-background-color: #19b3e2;
     -fx-text-fill:  #FFFFFF; 
 }
-.button:hovered {
-    -fx-text-fill: -fx-my-menu-font-color-highlighted;
+
+.my-round-user-button-class{
+    -fx-text-fill: rgba(0,0,0,1.0);
+    -fx-opacity: 0.6;
+    -fx-font-size: 1.5em;
+    -fx-font-family: sans-serif;
+    -fx-font-weight: bold;
+}
+.my-round-user-button-class:hover {
+    -fx-text-fill: #FFFFFF;
+    -fx-opacity: 1.0;
+    -fx-effect: dropshadow( three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 1);
 }
 
 /* MENU BAR + Top-level MENU BUTTONS */
