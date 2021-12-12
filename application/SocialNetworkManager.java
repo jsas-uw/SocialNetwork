@@ -5,7 +5,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
@@ -71,15 +74,12 @@ public class SocialNetworkManager {
     }
     
     public void logCommand(String command)
-    {
-    	//No matter what, log the action
-    	commandLog.add(command);
-    	
+    {   	
     	// Split the commands up to usable entries.
     	String[] splitStr = command.split("\\s+");
     	
     	// If the first piece is null quit
-    	if (splitStr[0].equals(null)) {
+    	if (splitStr[0] == null) {
     		return;
     	}
     	
@@ -88,8 +88,7 @@ public class SocialNetworkManager {
 		//I separated it since its not triggered by
 		//an event, just a method call
     	if (splitStr[0].equals("s")) {
-    		System.out.println("Set Central User: " + splitStr[1]);
-    		Main.ListenerClass.SetCentralUser(splitStr[1]);
+    		setCentralUser(splitStr[1]);
     	}
     	
     	// If the first piece is a, add the edge or vertex to the graph
@@ -98,18 +97,18 @@ public class SocialNetworkManager {
     		//use string.length, string[2] causes an index out of bounds
     		//error if there's only one user
     		if (splitStr.length == 2) 
-    			graph.addVertex(splitStr[1]);
+    			addUser(splitStr[1]);
     		else
-    			graph.addEdge(splitStr[1],splitStr[2]);
+    			addConnection(splitStr[1],splitStr[2]);
     	}
     	
     	// If the first piece is r, remove the edge or vertex (and edges) of the graph
     	if (splitStr[0].equals("r"))
     	{
     		if (splitStr.length == 2)
-    			graph.removeVertex(splitStr[1]);
+    			removeUser(splitStr[1]);
     		else
-    			graph.removeEdge(splitStr[1],splitStr[2]);
+    			removeConnection(splitStr[1],splitStr[2]);
     	}
     }
     
@@ -160,6 +159,15 @@ public class SocialNetworkManager {
     	// Close the new instances
  		pwOut.close();	
     }
+
+	/**
+     * Frontend Helper method that only logs the current central user.
+     *
+     */
+    public void logCentralUser(String user) {
+		// does not set, only logs
+		commandLog.add("s " + user);
+    }
     
 	/**
      * Frontend Helper method to add user to the graph.
@@ -167,6 +175,7 @@ public class SocialNetworkManager {
      */
     public void addUser(String user) { 
 		this.graph.addVertex(user);
+		commandLog.add("a " + user);
     }
 
 	/**
@@ -175,6 +184,7 @@ public class SocialNetworkManager {
      */
     public void addConnection(String user1, String user2) { 
 		this.graph.addEdge(user1, user2);
+		commandLog.add("a " + user1 + " " + user2);
     }
 
 	/**
@@ -183,6 +193,7 @@ public class SocialNetworkManager {
      */
     public void removeUser(String user) { 
 		this.graph.removeVertex(user);
+		commandLog.add("r " + user);
     }
 
 	/**
@@ -191,15 +202,14 @@ public class SocialNetworkManager {
      */
     public void removeConnection(String user1, String user2) { 
 		this.graph.removeEdge(user1, user2);
+		commandLog.add("r " + user1 + " " + user2);
     }
-    
-	/**
-     * Frontend Helper method to get shortest path from the graph.
-     *
-     */
-    public void getShortestPath(String user1, String user2) { 
-		// TODO: build out shortest path algorithm here
-		/// this.graph.[add function call here](user1, user2);
+        
+    public void setCentralUser(String user)
+    {
+    	System.out.println("Set Central User: " + user);
+		Main.ListenerClass.SetCentralUser(user);
+		commandLog.add("s " + user);
     }
     
     /**
@@ -310,5 +320,65 @@ public class SocialNetworkManager {
     	}
     	
     	return new ArrayList<String>();
+    }
+    
+    public List<String> getShortestPath(String person1, String person2)
+    {
+    	List<String> order = BFS(person1, person2);
+    	return order;
+    }
+    
+    private List<String> BFS(String src, String dest)
+    {
+
+    	// BFS algorithm using LinkedList of Integer type
+    	LinkedList<String> queue = new LinkedList<String>();
+    	HashSet<String> visited = new HashSet<String>();
+    	ArrayList<String> bfsAll = new ArrayList<String>();
+    	Hashtable<String,String> pred = new Hashtable<String,String>();
+    	ArrayList<String> order = new ArrayList<String>();
+    	
+    	// now source is first to be visited and
+    	// distance from source to itself should be 0
+    	bfsAll.add(src);
+		visited.add(src);
+    	queue.add(src);
+
+    	// BFS Algorithm
+    	while (!queue.isEmpty() && !visited.contains(dest)) {
+    		String current = queue.poll();
+    		
+    		if (current.equals(dest))
+    			break;
+    		
+    		for (String friend : getFriends(current)) {
+    			if (!visited.contains(friend))
+    			{
+    				visited.add(friend);
+    				queue.add(friend);
+    				bfsAll.add(friend);
+    				pred.put(friend, current);
+    				if (friend.equals(dest))
+    	    			break;
+    			}
+    		}
+    	}
+    	
+    	// Couldn't find the friend
+    	if (!bfsAll.contains(dest))
+    		return null;
+    	
+    	// Order them
+    	String tempPred = dest;
+    	while (!src.equals(tempPred))
+    	{
+    		order.add(tempPred);
+    		tempPred = pred.get(tempPred);
+    		if (tempPred == null)
+    			break;
+    	}
+    	order.add(src);
+    	Collections.reverse(order);
+    	return order;
     }
 }

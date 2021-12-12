@@ -85,4 +85,45 @@ public interface SocialNetworkManagerADT {
      * @return an List<String> of all the adjacent vertices for specified vertex
      */
 	public List<String> getFriends(String person);
+	
+	/**
+	 * Get the shortest path between two friends. Returns null if not connected.
+	 * 
+	 * @param person the spefcified person
+	 * @return a List<String> of path of friends in order
+	 */
+	public List<String> getShortestPath(String person1, String person2);
+	
+	/**
+     * Frontend Helper method that only logs the current central user.
+     * does not set, only logs
+     * @param user passed in from frontend
+     */
+    public void logCentralUser(String user);
+     
+     /**
+     * Frontend Helper method to add user to the graph.
+     *
+     */
+    public void addUser(String user);
+
+	/**
+     * Frontend Helper method to add connection to the graph.
+     *
+     */
+    public void addConnection(String user1, String user2);
+
+	/**
+     * Frontend Helper method to remove user from the graph.
+     *
+     */
+    public void removeUser(String user);
+
+	/**
+     * Frontend Helper method to remove connection from the graph.
+     *
+     */
+    public void removeConnection(String user1, String user2);
+        
+    public void setCentralUser(String user);
 }

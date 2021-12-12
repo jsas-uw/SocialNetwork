@@ -198,7 +198,9 @@ public class Main extends Application {
 			return new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent rb) {
 					Button tempButton = (Button)rb.getTarget();
-					SetCentralUser(tempButton.getId());
+					String user = tempButton.getId();
+					SetCentralUser(user);
+					NetManager.logCentralUser(user);
 					RefreshCenter();
 					}
 				};
