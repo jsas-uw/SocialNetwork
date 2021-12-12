@@ -164,6 +164,9 @@ public class SocialNetworkManager {
     	return action;
     }
     
+    public logGUIaction
+    
+    
     // Save the file
     public void saveLog(String fileOut) throws FileNotFoundException, IOException
     {
@@ -289,4 +292,6 @@ public class SocialNetworkManager {
     	
     	return new ArrayList<String>();
     }
+    
+    
 }

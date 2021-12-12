@@ -13,6 +13,11 @@ public class BuildBottomPane {
 	 * @param String statusMsg
 	 * @return Vbox bottomVBox
 	 */
+	
+	//public void updateBottom(int users, int ) {
+		
+
+	
 	public VBox getBottom(String statusMsg) {
 		//adds directly to the vbox
 		Label statusLabel = new Label(statusMsg);
