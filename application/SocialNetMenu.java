@@ -46,9 +46,9 @@ public class SocialNetMenu {
 		MenuItem f2 = new MenuItem("Load Social Network");
         f2.setId(CmdEnum.LOADFILE.toString());
 		MenuItem f3 = new MenuItem("Save Social Network");
-        f1.setId(CmdEnum.SAVEFILE.toString());
+        f3.setId(CmdEnum.SAVEFILE.toString());
 		// add menu items to menu
-		fileMenu.getItems().add(f1);
+		// fileMenu.getItems().add(f1);	// Initialize not implemented yet
 		fileMenu.getItems().add(f2);
 		fileMenu.getItems().add(f3);
 
@@ -118,9 +118,10 @@ public class SocialNetMenu {
         u1.setOnAction(Main.ListenerClass.menuCmdEvent());
 		u2.setOnAction(Main.ListenerClass.menuCmdEvent());
 		u3.setOnAction(Main.ListenerClass.menuCmdEvent());
+		u4.setOnAction(Main.ListenerClass.menuCmdEvent());
         c1.setOnAction(Main.ListenerClass.menuCmdEvent());
 		c2.setOnAction(Main.ListenerClass.menuCmdEvent());
-		c3.setOnAction(event);
+		c3.setOnAction(Main.ListenerClass.menuCmdEvent());
 
 
 		// add menus to menubar
