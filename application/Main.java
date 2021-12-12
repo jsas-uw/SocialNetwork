@@ -159,7 +159,7 @@ public class Main extends Application {
 							e.printStackTrace();
 						}
 						BuildBottomPane buildBottomPane = new BuildBottomPane();
-						Main.root.setBottom(buildBottomPane.getBottom("Loaded file: " + menuFileParameter.getText()));
+						Main.root.setBottom(buildBottomPane.getBottom("Saved file: " + menuFileParameter.getText()));
 					}
 					if (((MenuItem)t.getSource()).getId() == CmdEnum.USERSHOWALL.toString()){
 						RefreshRight();
