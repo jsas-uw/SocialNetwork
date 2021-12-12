@@ -1,20 +1,10 @@
 # SocialNetwork
-Downloaded the main branch and merged Remy's changes. 
-Idea is to merge all the latest changes to the "Combined" branch.
 
+- This is bill's version of the combined branch.
+- The runEXE.bat should work if you have the JavaFX lib in the c:\temp\ directory as listed in the .bat
+- It has the buttons with different colors
+- A stub for Shortest Path call is in the SocialNetworkManager.java
+- The public methods for add/remove user/connection need to have these commands logged.
+- File Load works properly
+- Does not seem like File Save works properly 
 
-Todo:
-- Final checks: review assignment/rubric to make sure we have everything
-- Bottom pane: check that we have all status messages and hook the counters up to the graph
-
-
-# Graph
-
-*Removed Cycle detection and directionality from the graph classes
-
-https://github.com/jsas-uw/p4-graph
-I made a repo for my graph program. 
-Since its not using hash tables it may be 
-better to use a different graph program as 
-the base as long as its not missing
-a function we need for the social network.
