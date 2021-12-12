@@ -15,6 +15,11 @@ I added a class for the bottom pane based on the original GUI mockup. I also add
 
 I got it to use the graph to populate the buttons. Show all users and load file will display actual users now. logCommand parses everything from the input files and updates the graph correctly.
 
+Todo:
+- Final checks: review assignment/rubric to make sure we have everything
+- Bottom pane: check that we have all status messages and hook the counters up to SocialNetworkManager to get graph stats
+
+
 # Bill's tasks
 - Today 
 -     added some quick styling to the round user buttons.
@@ -24,22 +29,10 @@ I got it to use the graph to populate the buttons. Show all users and load file 
 -     I hope to get a File Picker to work for both the load and save. -Bill 20211207
 
 
-
-
-
-For reference: SocialNetMenu calls event listeners in the ListenerClass subclass of Main. 
-From Main we still need to instantiate a SocialNetworkManager
-which should be able to initalize a graph based on a file
-and handle making the calls to modify the graph. 
-Then listeners trigger events which use the SocialNetworkManager to modify the graph
-and make calls to rebuild the panes.
-
-
-
-
 # Graph
 
 *Removed Cycle detection from the graph classes
+
 *Some of the buttons still aren't implemented, but based on load file the graph is constructed as expected.
 
 https://github.com/jsas-uw/p4-graph
