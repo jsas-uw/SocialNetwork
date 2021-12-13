@@ -17,7 +17,9 @@ I got it to use the graph to populate the buttons. Show all users and load file 
 
 Todo:
 - Final checks: review assignment/rubric to make sure we have everything
-- Bottom pane: check that we have all status messages and hook the counters up to SocialNetworkManager to get graph stats
+- Bottom pane: check that we have all status messages and hook the counters up to SocialNetworkManager to get graph stats (done)
+
+Added an alert popup to prompt the user to save before exiting.
 
 
 # Bill's tasks
