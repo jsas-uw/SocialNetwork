@@ -1,10 +1,15 @@
 package application;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.event.MenuEvent;
 
@@ -15,17 +20,19 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Tooltip;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -35,6 +42,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class Main extends Application {
 	// store any command-line arguments that were entered.
@@ -122,7 +130,12 @@ public class Main extends Application {
 			public void handle(KeyEvent event) { 
 				if (((TextField)event.getSource()).getId() == "USERPARAMETER"){
 					menuUserParameter.setText(((TextField)event.getSource()).getText());
-					String msg = "The Value of the Target User Parameter: " + menuUserParameter.getText();
+					if (!validUserInput(menuUserParameter.getText())) {
+						String allowedChars = ("Usernames can only be letters, numbers, apostrophe and underscore ");
+						RefreshBottom(allowedChars);
+						return;
+					}
+					String msg = "User text field input : " + menuUserParameter.getText();
 					RefreshBottom(msg);
 					
 				}
@@ -134,6 +147,7 @@ public class Main extends Application {
 			}           
 		 };
 
+		
 		public static EventHandler<ActionEvent> txtFieldEvent() {
 			return new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent t) {
@@ -180,8 +194,10 @@ public class Main extends Application {
 						String msg = "Showing all users";
 						RefreshBottom(msg);
 					}
+					
+					//added validUserInput check to the conditional
 					if (((MenuItem)t.getSource()).getId() == CmdEnum.USERADD.toString()){
-						if (!menuUserParameter.getText().equals("")){
+						if (!menuUserParameter.getText().equals("") && validUserInput(menuUserParameter.getText())){
 							NetManager.addUser(menuUserParameter.getText());
 							RefreshRight();
 							String msg = "Added user: " + menuUserParameter.getText();
@@ -191,7 +207,7 @@ public class Main extends Application {
 							RefreshBottom("could not add user " + menuUserParameter.getText());
 					}
 					if (((MenuItem)t.getSource()).getId() == CmdEnum.USERREMOVE.toString()){
-						if (!menuUserParameter.getText().equals("")){
+						if (!menuUserParameter.getText().equals("") && validUserInput(menuUserParameter.getText())){
 							NetManager.removeUser(menuUserParameter.getText());
 							RefreshRight();
 							String msg = "Removed user: " + menuUserParameter.getText();
@@ -199,7 +215,7 @@ public class Main extends Application {
 						}	
 					}
 					if (((MenuItem)t.getSource()).getId() == CmdEnum.CONNECTIONADD.toString()){
-						if (!menuUserParameter.getText().equals("") && !centralUserButton.getId().equals("")){
+						if (!menuUserParameter.getText().equals("") && !centralUserButton.getId().equals("") && validUserInput(menuUserParameter.getText())){
 							NetManager.addConnection(centralUserButton.getId(),menuUserParameter.getText());
 							RefreshCenter();
 							String msg = "Added connection between " + centralUserButton.getId()+ " and " + menuUserParameter.getText();
@@ -208,7 +224,7 @@ public class Main extends Application {
 					}
 					
 					if (((MenuItem)t.getSource()).getId() == CmdEnum.CONNECTIONREMOVE.toString()){
-						if (!menuUserParameter.getText().equals("") && !centralUserButton.getId().equals("")){
+						if (!menuUserParameter.getText().equals("") && !centralUserButton.getId().equals("") && validUserInput(menuUserParameter.getText())){
 							NetManager.removeConnection(centralUserButton.getId(),menuUserParameter.getText());
 							RefreshCenter();
 							String msg = "Removed connection between " + centralUserButton.getId()+ " and " + menuUserParameter.getText();
@@ -231,7 +247,7 @@ public class Main extends Application {
 					 */
 					if (((MenuItem)t.getSource()).getId() == CmdEnum.SHORTESTPATH.toString()) {
 						if (!Main.validUserInput(menuUserParameter.getText())) {
-							RefreshBottom("Path not found, invalid user input");
+							RefreshBottom("Path not found, invalid username");
 						}
 						if (centralUserButton.getId() == null) {
 							RefreshBottom("Path not found, current user is null");
@@ -246,6 +262,12 @@ public class Main extends Application {
 					}
 					
 					if (((MenuItem)t.getSource()).getId() == CmdEnum.SHAREDFRIENDS.toString()) {
+						if (!Main.validUserInput(menuUserParameter.getText())) {
+							RefreshBottom("Can't list shared friends, invalid username");
+						}
+						if (centralUserButton.getId() == null) {
+							RefreshBottom("Can't list shared friends, current user is null");
+						}
 						System.out.println("Shared Friends");
 						List<String> sharedFriends = NetManager.mutualFriends(centralUserButton.getId(),menuUserParameter.getText());
 						root.setRight(null);
@@ -269,22 +291,30 @@ public class Main extends Application {
 					RefreshCenter();
 					String msg = "Set " + tempButton.getText() + " as current user";
 					RefreshBottom(msg);
-					}
-				};
+				}
 			};
-		}
+		};
+		
+	}
 		
 	/**
-	 * We should probably trim whitespace from the input
-	 * we need to check for "special" characters, 
-	 * program description has a list of allowed characters   
-	 * 
+	 * program description has a list of allowed characters
+	 * which are letters, numbers, apostrophe, and underscore 
+	 * the regex checks if the input string has any characters
+	 * outside this set
+	 *    
 	 * @param user input string
-	 * @return boolean of if its valid
+	 * @return boolean of whether its valid
 	 */
 	public static boolean validUserInput(String input) {
 		if (input == null) {return false;}
 		if (input.equals("")) {return false;}
+		Pattern regex = Pattern.compile("[^a-zA-z0-9_']+");
+		Matcher regexMatcher = regex.matcher(input);
+		if (regexMatcher.find()) {
+			return false;
+		}
+		
 		return true;
 	}
 
@@ -317,7 +347,52 @@ public class Main extends Application {
         primaryStage.setTitle(APP_TITLE);
         primaryStage.setScene(mainScene);
         primaryStage.show();
+        
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent close) {
+                System.out.println("Exit pressed"); //debug
+                
+                //argument prepopulates the text field with a sample file
+                TextInputDialog dialog = new TextInputDialog("log.txt");
+                
+                dialog.setHeaderText("Save log as a .txt file before exiting?");
+                dialog.setContentText("Enter file path");
+                
+                //make new button types and map to ButtonData categories
+                //essentially this just replaces the default dialog button labels
+                ButtonType save = new ButtonType("Save", ButtonData.OK_DONE);
+                ButtonType exit = new ButtonType("Exit", ButtonData.CANCEL_CLOSE);
+                //add new button types and remove default ones from the dialog pane
+                dialog.getDialogPane().getButtonTypes().addAll(save, exit);
+                dialog.getDialogPane().getButtonTypes().removeAll(ButtonType.CANCEL, ButtonType.OK);
+                
+                //wait for an file path
+                //(should always be true since a default is provided) 
+                Optional<String> result = dialog.showAndWait();
+                if (result.isPresent()){
+                	/*
+                	 * try catch is kind of redundant because you don't even need
+                	 * the .txt file extension, it will save as a generic file 
+                	 * unless you really mess with it and use "/" 
+                	 * or other illegal characters for file names...  
+                	 */
+                    try {
+						NetManager.saveLog(result.get());
+						System.out.println("Command Log saved to: " + result.get());
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+                    
+                }
+           
+            }
+        });  
 	}
+
 
 	/**
 	 * @param args

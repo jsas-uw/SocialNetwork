@@ -1,3 +1,5 @@
+
+
 package application;
 
 import java.util.ArrayList;
@@ -31,8 +33,6 @@ public class BuildRightPane {
 			alert.showAndWait();
 		}
 
-		
-			
 
     		// Create a flow pane for the buttons
 			FlowPane flow = new FlowPane();
