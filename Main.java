@@ -89,7 +89,8 @@ public class Main extends Application {
         	tool.setText(hiddenLabel.getText());  
         	centralUserButton.setTooltip(tool);
 			centralUserButton.setVisible(true);
-			centralUserButton.setOnAction(userButtonClickEvent());	
+			centralUserButton.setOnAction(userButtonClickEvent());
+			RefreshCenter();
 		}
 		
 		public static void RefreshCenter(){
@@ -97,7 +98,8 @@ public class Main extends Application {
 			root.setCenter(null);
 			// build/refresh the center pane
 			buildCenterPane = new BuildCenterPane();
-			root.setRight(buildCenterPane.getPane(NetManager.getFriends(centralUserButton.getId())));
+			System.out.println(centralUserButton.getId());
+			buildCenterPane.getPane(NetManager.getFriends(centralUserButton.getId()));
 		}
 
 		/*
