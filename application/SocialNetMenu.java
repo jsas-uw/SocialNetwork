@@ -11,6 +11,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 
+/**
+ * Filename:   SocialNetMenu.java
+ * Project:    Social Network - A3 Deliverable
+ * Authors:    A-Team 11
+ * 
+ * Builds the menu for the application and sets action to an event handler in Main.
+ */
 public class SocialNetMenu {
 
     public HBox getMenu(){
