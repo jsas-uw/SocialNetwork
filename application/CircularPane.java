@@ -6,6 +6,15 @@ import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 
+/**
+ * Filename:   CircularPane.java
+ * Project:    Social Network - A3 Deliverable
+ * Authors:    A-Team 11
+ * 
+ * builds a circular layout
+ * uses 360 degrees divided by number of children to
+ * evenly distribute the children around a circle
+ */
 public class CircularPane extends Pane {
     @Override
     protected void layoutChildren() {
