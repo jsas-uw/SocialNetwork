@@ -6,7 +6,14 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.Alert.AlertType;
 
-
+/**
+ * Filename:   RoundButton.java
+ * Project:    Social Network - A3 Deliverable
+ * Authors:    A-Team 11
+ * 
+ * Custom button to allow for specific and fixed styling for some items (min/max width/height, radius, insets, font-weight).
+ * also has a custom CSS class ("my-round-user-button-class") to allow styling of other items from the application.css.
+ */
 public class RoundButton extends Button {
     public RoundButton() {
         super();
