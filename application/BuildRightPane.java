@@ -12,6 +12,13 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 
+/**
+ * Filename:   BuildRightPane.java
+ * Project:    Social Network - A3 Deliverable
+ * Authors:    A-Team 11
+ *
+ * Builds the right pane in the app layout
+ */
 public class BuildRightPane {
 
 	RoundButton roundButton = new RoundButton();
@@ -27,7 +34,7 @@ public class BuildRightPane {
 			}
 		}
 		else {
-			Alert alert = new Alert(AlertType.INFORMATION, "oops List<String> was null", ButtonType.OK);
+			Alert alert = new Alert(AlertType.INFORMATION, "List<String> was null.", ButtonType.OK);
 			alert.showAndWait();
 		}
 
