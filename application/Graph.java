@@ -173,15 +173,13 @@ public class Graph implements GraphADT {
 		 */
 		
 		if (temp1 != null && !temp1.contains(vertex2)) {
-			temp1.add(vertex2);
-			size++;
+			temp1.add(vertex2);	
 		}
 		
 		if (temp2 != null && !temp2.contains(vertex1)) {
 			temp2.add(vertex1);
-			size++;
 		}
-
+		size++;
 			//if we got past the first loop 
 			//the graph shouldn't contain the edge 
 			//and we add it to temp1
