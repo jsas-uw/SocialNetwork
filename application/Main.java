@@ -108,7 +108,7 @@ public class Main extends Application {
 
 		public static void RefreshBottom(String msg) {
 			//updateStats
-			buildBottomPane.updateStats(NetManager.size(), NetManager.order());
+			buildBottomPane.updateStats(NetManager.getSize(), NetManager.getOrder());
 			root.setBottom(buildBottomPane.getBottom(msg));
 		}
 
