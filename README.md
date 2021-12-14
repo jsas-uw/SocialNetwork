@@ -23,12 +23,14 @@ Added an alert popup to prompt the user to save before exiting.
 
 
 # Bill's tasks
-- Today 
--     added some quick styling to the round user buttons.
-- Next.
--     wire up the last of the menu items and comment out initialize (unless John gets to these first)
-- Later (if no one gets to it first)
--     I hope to get a File Picker to work for both the load and save. -Bill 20211207
+- Today: 
+-     added comments to .java files and some methods
+- Next:
+-     
+- Later:
+-     meet on Zoom
+-     study for the exam
+-     
 
 
 # Graph
