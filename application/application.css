@@ -1,4 +1,13 @@
-/* VARIABLE DEFINITIONS: Only these 4 variables have to be adjusted, the rest is copy-paste */
+/**
+ * Filename:   application.css
+ * Project:    Social Network - A3 Deliverable
+ * Authors:    A-Team 11
+ * 
+ * CSS file for the application
+ * some styling is done directly on buttons, so cannot be styled here.
+ */
+
+/* VARIABLE DEFINITIONS: */
 * {
     -fx-my-menu-color:  #d1edfa;                 /* Change according to your needs */
     -fx-my-menu-color-highlighted: #76d2ee;      /* Change according to your needs */
