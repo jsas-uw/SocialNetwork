@@ -52,10 +52,10 @@ public class Main extends Application {
 	static Label menuUserParameter = new Label(""); // this is set by event handler for key presses in the menu
 	static Label menuFileParameter = new Label("");
 
-	static RoundButton centralUserButton  = new RoundButton(hiddenLabel.getText()); // was previously initButton 
+	static RoundButton centralUserButton  = new RoundButton(hiddenLabel.getText()); // was previously initButton
 	static HashMap<String, RoundButton> ButtonHashMap = new HashMap<String, RoundButton>();
 	static UserButtonFactory userButtonFactory = new UserButtonFactory();
-	
+
 	// Main layout is Border Pane example (top,left,center,right,bottom)
 	static BorderPane root = new BorderPane();
 	static ScrollPane rightPane = new ScrollPane();
@@ -80,13 +80,13 @@ public class Main extends Application {
 			centralUserButton.setText(tempButton.getId());
 			centralUserButton.setId(tempButton.getId());
 			centralUserButton.setStyle(ButtonHashMap.get(tempButton.getId()).getStyle());
-			Tooltip tool=new Tooltip();   
-        	tool.setText(hiddenLabel.getText());  
+			Tooltip tool=new Tooltip();
+        	tool.setText(hiddenLabel.getText());
         	centralUserButton.setTooltip(tool);
 			centralUserButton.setVisible(true);
-			centralUserButton.setOnAction(userButtonClickEvent());	
+			centralUserButton.setOnAction(userButtonClickEvent());
 		}
-		
+
 		public static void RefreshCenter(List<String> list, String toplabel, String centerlabel){
 			root.setRight(null);
 			root.setCenter(null);
@@ -108,15 +108,15 @@ public class Main extends Application {
 
 		public static void RefreshBottom(String msg) {
 			//updateStats
-			//buildBottomPane.updateStats(NetManager.size(), NetManager.order());
+			buildBottomPane.updateStats(NetManager.size(), NetManager.order());
 			root.setBottom(buildBottomPane.getBottom(msg));
 		}
 
 
-		//Handling the key typed event 
-		static EventHandler<KeyEvent> eventHandlerTextFieldKeyReleased = new EventHandler<KeyEvent>() { 
-			@Override 
-			public void handle(KeyEvent event) { 
+		//Handling the key typed event
+		static EventHandler<KeyEvent> eventHandlerTextFieldKeyReleased = new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
 				if (((TextField)event.getSource()).getId() == "USERPARAMETER"){
 					menuUserParameter.setText(((TextField)event.getSource()).getText());
 					String msg = "The Value of the Target User Parameter: " + menuUserParameter.getText();
@@ -126,16 +126,21 @@ public class Main extends Application {
 					menuFileParameter.setText(((TextField)event.getSource()).getText());
 					String msg = "The Value of the Target File Parameter: " + menuFileParameter.getText();
 					RefreshBottom(msg);
-				} 
-			}           
+				}
+			}
 		 };
 
 		public static EventHandler<ActionEvent> txtFieldEvent() {
 			return new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent t) {
-	
+
 					if (((TextField)t.getSource()).getId() == "USERPARAMETER"){
 					menuUserParameter.setText(((TextField)t.getSource()).getText());
+					if (!validUserInput(menuUserParameter.getText())) {
+						String allowedChars = ("Usernames can only be letters, numbers, apostrophe and underscore ");
+						RefreshBottom(allowedChars);
+						return;
+					}
 					String msg = "The Value of the Target User Parameter: " + menuUserParameter.getText();
 					RefreshBottom(msg);
 					}
@@ -143,7 +148,7 @@ public class Main extends Application {
 						menuFileParameter.setText(((TextField)t.getSource()).getText());
 						String msg = "The Value of the Target File Parameter: " + menuFileParameter.getText();
 						RefreshBottom(msg);
-					} 
+					}
 				}
 			};
 		}
@@ -155,17 +160,19 @@ public class Main extends Application {
 						// Calls into SocialNetworkManager NetManager
 						try {
 							FileChooser fileChooser = new FileChooser();
- 
+
               				//Set extension filter
               				FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
               				fileChooser.getExtensionFilters().add(extFilter);
-             
+
               				//Show save file dialog
               				File file = fileChooser.showOpenDialog(new Stage());
-             
+
               				if(file != null){
 								menuFileParameter.setText(file.getAbsolutePath());
 								NetManager.loadFile(menuFileParameter.getText());
+								String msg = "Loaded file: " + menuFileParameter.getText();
+								RefreshBottom(msg);
               				}
 							//NetManager.loadFile(menuFileParameter.getText());
 						} catch (FileNotFoundException e) {
@@ -173,33 +180,33 @@ public class Main extends Application {
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
-						String msg = "Loaded file: " + menuFileParameter.getText();
-						RefreshBottom(msg);
+
 					}
 					if (((MenuItem)t.getSource()).getId().equals(CmdEnum.SAVEFILE.toString())){
 						// Calls into SocialNetworkManager NetManager
 						try {
 							FileChooser fileChooser = new FileChooser();
- 
+
               				//Set extension filter
               				FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
               				fileChooser.getExtensionFilters().add(extFilter);
-             
+
               				//Show save file dialog
               				File file = fileChooser.showSaveDialog(new Stage());
-             
+
               				if(file != null){
 								menuFileParameter.setText(file.getAbsolutePath());
 								NetManager.saveLog(menuFileParameter.getText());
+								String msg = "Saved to file: " + menuFileParameter.getText();
+								RefreshBottom(msg);
               				}
-							
+
 						} catch (FileNotFoundException e) {
 							e.printStackTrace();
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
-						String msg = "Saved to file: " + menuFileParameter.getText();
-						RefreshBottom(msg);
+
 					}
 					if (((MenuItem)t.getSource()).getId() == CmdEnum.USERSHOWALL.toString()){
 						RefreshRight();
@@ -207,7 +214,7 @@ public class Main extends Application {
 						RefreshBottom(msg);
 					}
 					if (((MenuItem)t.getSource()).getId() == CmdEnum.USERADD.toString()){
-						if (!menuUserParameter.getText().equals("")){
+						if (!menuUserParameter.getText().equals("") && validUserInput(menuUserParameter.getText()){
 							NetManager.addUser(menuUserParameter.getText());
 							RefreshRight();
 							String msg = "Added user: " + menuUserParameter.getText();
@@ -216,18 +223,20 @@ public class Main extends Application {
 						else {
 							RefreshBottom("could not add user " + menuUserParameter.getText());
 						}
-					}	
+					}
 
 					if (((MenuItem)t.getSource()).getId() == CmdEnum.USERREMOVE.toString()){
-						if (!menuUserParameter.getText().equals("")){
+						if (!menuUserParameter.getText().equals("") && validUserInput(menuUserParameter.getText()){
 							NetManager.removeUser(menuUserParameter.getText());
 							RefreshRight();
 							String msg = "Removed user: " + menuUserParameter.getText();
 							RefreshBottom(msg);
-						}	
+						}
+						else
+							RefreshBottom("could not remove user " + menuUserParameter.getText());
 					}
 					if (((MenuItem)t.getSource()).getId() == CmdEnum.CONNECTIONADD.toString()){
-						if (!menuUserParameter.getText().equals("") && !centralUserButton.getId().equals("")){
+						if (!menuUserParameter.getText().equals("") && !centralUserButton.getId().equals("") && validUserInput(menuUserParameter.getText()){
 							NetManager.addConnection(centralUserButton.getId(),menuUserParameter.getText());
 							RefreshCenter(NetManager.getFriends(centralUserButton.getId()),
 							CmdEnum.CONNECTIONADD.toString(), centralUserButton.getId());
@@ -235,11 +244,11 @@ public class Main extends Application {
 							RefreshBottom(msg);
 						}
 					}
-					
+
 					if (((MenuItem)t.getSource()).getId() == CmdEnum.CONNECTIONREMOVE.toString()){
-						if (!menuUserParameter.getText().equals("") && !centralUserButton.getId().equals("")){
+						if (!menuUserParameter.getText().equals("") && !centralUserButton.getId().equals("") && validUserInput(menuUserParameter.getText()){
 							NetManager.removeConnection(centralUserButton.getId(),menuUserParameter.getText());
-							RefreshCenter(NetManager.getFriends(centralUserButton.getId()), 
+							RefreshCenter(NetManager.getFriends(centralUserButton.getId()),
 							CmdEnum.CONNECTIONREMOVE.toString(), centralUserButton.getId());
 							String msg = "Removed connection between " + centralUserButton.getId()+ " and " + menuUserParameter.getText();
 							RefreshBottom(msg);
@@ -247,8 +256,14 @@ public class Main extends Application {
 					}
 
 					if (((MenuItem)t.getSource()).getId() == CmdEnum.SHAREDFRIENDS.toString()){
-						if (!menuUserParameter.getText().equals("") && !centralUserButton.getId().equals("")){   
-							RefreshCenter(NetManager.mutualFriends(centralUserButton.getId(), menuUserParameter.getText()), 
+						if (!Main.validUserInput(menuUserParameter.getText())) {
+							RefreshBottom("Path not found, invalid username");
+						}
+						if (centralUserButton.getId() == null) {
+							RefreshBottom("Path not found, current user is null");
+						}
+						if (!menuUserParameter.getText().equals("") && !centralUserButton.getId().equals("")){
+							RefreshCenter(NetManager.mutualFriends(centralUserButton.getId(), menuUserParameter.getText()),
 							CmdEnum.SHAREDFRIENDS.toString(), (" " + centralUserButton.getId() + " and " + menuUserParameter.getText()));
 							String msg = "Showing friends between " + centralUserButton.getId()+ " and " + menuUserParameter.getText();
 							RefreshBottom(msg);
@@ -256,14 +271,20 @@ public class Main extends Application {
 					}
 
 					if (((MenuItem)t.getSource()).getId() == CmdEnum.SHORTESTPATH.toString()){
-						if (!menuUserParameter.getText().equals("") && !centralUserButton.getId().equals("")){   
-							RefreshCenter(NetManager.getShortestPath(centralUserButton.getId(), menuUserParameter.getText()), 
+						if (!Main.validUserInput(menuUserParameter.getText())) {
+							RefreshBottom("Can't list shared friends, invalid username");
+						}
+						if (centralUserButton.getId() == null) {
+							RefreshBottom("Can't list shared friends, current user is null");
+						}
+						if (!menuUserParameter.getText().equals("") && !centralUserButton.getId().equals("")){
+							RefreshCenter(NetManager.getShortestPath(centralUserButton.getId(), menuUserParameter.getText()),
 							CmdEnum.SHORTESTPATH.toString(), (" from " + centralUserButton.getId() + " to " + menuUserParameter.getText()));
 							String msg = "Showing path between " + centralUserButton.getId()+ " and " + menuUserParameter.getText();
 							RefreshBottom(msg);
 						}
 					}
-					
+
 				}
 			};
 		}
@@ -280,14 +301,33 @@ public class Main extends Application {
 				};
 			};
 		}
-		
-		
+
+	/**
+	 * program description has a list of allowed characters
+	 * which are letters, numbers, apostrophe, and underscore
+	 * the regex checks if the input string has any characters
+	 * outside this set
+	 *
+	 * @param user input string
+	 * @return boolean of whether its valid
+	 */
+	public static boolean validUserInput(String input) {
+		if (input == null) {return false;}
+		if (input.equals("")) {return false;}
+		Pattern regex = Pattern.compile("[^a-zA-z0-9_']+");
+		Matcher regexMatcher = regex.matcher(input);
+		if (regexMatcher.find()) {
+			return false;
+		}
+
+		return true;
+	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// save args example
 		args = this.getParameters().getRaw();
-		
+
 		primaryStage.setOnCloseRequest(event -> {
 			System.out.println("Stage is closing");
 			// Save file
@@ -298,11 +338,11 @@ public class Main extends Application {
 				  FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
 				  fileChooser.getExtensionFilters().add(extFilter);
 				  fileChooser.setTitle("WARNING: clicking CANCEL will exit WITHOUT saving your work.");
- 
+
 				  //Show save file dialog
 				  File file = fileChooser.showSaveDialog(new Stage());
-				  
- 
+
+
 				  if(file != null){
 					menuFileParameter.setText(file.getAbsolutePath());
 					NetManager.saveLog(menuFileParameter.getText());
@@ -310,27 +350,27 @@ public class Main extends Application {
 				  else {
 					  System.out.println("Social Network Closed without save, per user CANCEL button click.");
 				  }
-				
+
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		});
-		
-		// Create a vertical box 
+
+		// Create a vertical box
         VBox vbox = new VBox();
 		vbox.getChildren().add(new Label("Central User"));
         vbox.getChildren().add(centralUserButton);
 		centralUserButton.setVisible(false);
-        leftPane = new ScrollPane(vbox);	
+        leftPane = new ScrollPane(vbox);
 		// Add the vertical box left pane
         root.setLeft(leftPane);
-		
+
 
 		// Add the vertical box to the center of the root pane
 		root.setTop(this.menuBar.getMenu());
-        
+
 		root.setRight(null);
 		root.setBottom(new Label("This is the root.setBottom"));
 
