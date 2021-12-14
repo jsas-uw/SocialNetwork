@@ -13,13 +13,20 @@ public class BuildBottomPane {
 	 * @param String statusMsg
 	 * @return Vbox bottomVBox
 	 */
+	
+	private int users;
+	private int connections;
+	
+	public void updateStats(int size, int order) {
+		users = order;
+		connections = size;
+	}
+	
 	public VBox getBottom(String statusMsg) {
 		//adds directly to the vbox
 		Label statusLabel = new Label(statusMsg);
 		
 		//Stats (Ultimately this gets added as an HBox)
-		int users = 0; //graph.order
-		int connections = 0; //graph.size
 		String userMsg = "Total Users: " + users;
 		String connectionsMsg = "\tTotal Connections: " + connections;
 		Label userLabel = new Label(userMsg);
