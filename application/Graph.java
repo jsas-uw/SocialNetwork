@@ -213,9 +213,7 @@ public class Graph implements GraphADT {
 		}
 		
 		if (temp != null) {
-			if(temp.remove(vertex2)) {
-				size--;
-			}
+			temp.remove(vertex2);
 		}
 		
 		
