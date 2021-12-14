@@ -11,6 +11,12 @@
     -fx-text-fill:  #FFFFFF; 
 }
 
+.label {
+    -fx-font-size: 1.25em;
+    -fx-font-family: sans-serif;
+    -fx-font-weight: bold;
+}
+
 .my-round-user-button-class{
     -fx-text-fill: rgba(0,0,0,1.0);
     -fx-opacity: 0.6;

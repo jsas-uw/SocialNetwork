@@ -1,5 +1,6 @@
 package application;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,7 +35,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 public class Main extends Application {
 	// store any command-line arguments that were entered.
@@ -43,7 +46,7 @@ public class Main extends Application {
 
 	private static final int WINDOW_WIDTH = 1280;
 	private static final int WINDOW_HEIGHT = 600;
-	private static final String APP_TITLE = "CS400 Social Network !";
+	private static final String APP_TITLE = "CS400 Social Network - A Team 11";
 
 	static Label hiddenLabel = new Label("");
 	static Label menuUserParameter = new Label(""); // this is set by event handler for key presses in the menu
@@ -61,6 +64,7 @@ public class Main extends Application {
 
 	static BuildCenterPane buildCenterPane = new BuildCenterPane();
 	static BuildRightPane buildRightPane = new BuildRightPane();
+	static BuildBottomPane buildBottomPane = new BuildBottomPane();
 
 	public SocialNetMenu menuBar = new SocialNetMenu();
 
@@ -83,12 +87,12 @@ public class Main extends Application {
 			centralUserButton.setOnAction(userButtonClickEvent());	
 		}
 		
-		public static void RefreshCenter(){
+		public static void RefreshCenter(List<String> list, String toplabel, String centerlabel){
 			root.setRight(null);
 			root.setCenter(null);
 			// build/refresh the center pane
 			buildCenterPane = new BuildCenterPane();
-			root.setRight(buildCenterPane.getPane(NetManager.getFriends(centralUserButton.getId())));
+			root.setRight(buildCenterPane.getPane(list, toplabel, centerlabel));
 		}
 
 		public static void RefreshRight(){
@@ -102,6 +106,12 @@ public class Main extends Application {
 			root.setRight(buildRightPane.getPane(userList));
 		}
 
+		public static void RefreshBottom(String msg) {
+			//updateStats
+			//buildBottomPane.updateStats(NetManager.size(), NetManager.order());
+			root.setBottom(buildBottomPane.getBottom(msg));
+		}
+
 
 		//Handling the key typed event 
 		static EventHandler<KeyEvent> eventHandlerTextFieldKeyReleased = new EventHandler<KeyEvent>() { 
@@ -110,14 +120,12 @@ public class Main extends Application {
 				if (((TextField)event.getSource()).getId() == "USERPARAMETER"){
 					menuUserParameter.setText(((TextField)event.getSource()).getText());
 					String msg = "The Value of the Target User Parameter: " + menuUserParameter.getText();
-					BuildBottomPane buildBottomPane = new BuildBottomPane();
-					Main.root.setBottom(buildBottomPane.getBottom(msg));
+					RefreshBottom(msg);
 				}
 				if (((TextField)event.getSource()).getId() == "FILEPARAMETER"){
 					menuFileParameter.setText(((TextField)event.getSource()).getText());
 					String msg = "The Value of the Target File Parameter: " + menuFileParameter.getText();
-					BuildBottomPane buildBottomPane = new BuildBottomPane();
-					Main.root.setBottom(buildBottomPane.getBottom(msg));	
+					RefreshBottom(msg);
 				} 
 			}           
 		 };
@@ -128,8 +136,14 @@ public class Main extends Application {
 	
 					if (((TextField)t.getSource()).getId() == "USERPARAMETER"){
 					menuUserParameter.setText(((TextField)t.getSource()).getText());
-					Main.root.setBottom(new Label("The Value of the Target User Parameter: " + menuUserParameter.getText()));
+					String msg = "The Value of the Target User Parameter: " + menuUserParameter.getText();
+					RefreshBottom(msg);
 					}
+					if (((TextField)t.getSource()).getId() == "FILEPARAMETER"){
+						menuFileParameter.setText(((TextField)t.getSource()).getText());
+						String msg = "The Value of the Target File Parameter: " + menuFileParameter.getText();
+						RefreshBottom(msg);
+					} 
 				}
 			};
 		}
@@ -140,53 +154,113 @@ public class Main extends Application {
 					if (((MenuItem)t.getSource()).getId().equals(CmdEnum.LOADFILE.toString())){
 						// Calls into SocialNetworkManager NetManager
 						try {
-							NetManager.loadFile(menuFileParameter.getText());
+							FileChooser fileChooser = new FileChooser();
+ 
+              				//Set extension filter
+              				FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+              				fileChooser.getExtensionFilters().add(extFilter);
+             
+              				//Show save file dialog
+              				File file = fileChooser.showOpenDialog(new Stage());
+             
+              				if(file != null){
+								menuFileParameter.setText(file.getAbsolutePath());
+								NetManager.loadFile(menuFileParameter.getText());
+              				}
+							//NetManager.loadFile(menuFileParameter.getText());
 						} catch (FileNotFoundException e) {
 							e.printStackTrace();
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
-						BuildBottomPane buildBottomPane = new BuildBottomPane();
-						Main.root.setBottom(buildBottomPane.getBottom("Loaded file: " + menuFileParameter.getText()));
+						String msg = "Loaded file: " + menuFileParameter.getText();
+						RefreshBottom(msg);
 					}
 					if (((MenuItem)t.getSource()).getId().equals(CmdEnum.SAVEFILE.toString())){
 						// Calls into SocialNetworkManager NetManager
 						try {
-							NetManager.saveLog(menuFileParameter.getText());
+							FileChooser fileChooser = new FileChooser();
+ 
+              				//Set extension filter
+              				FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+              				fileChooser.getExtensionFilters().add(extFilter);
+             
+              				//Show save file dialog
+              				File file = fileChooser.showSaveDialog(new Stage());
+             
+              				if(file != null){
+								menuFileParameter.setText(file.getAbsolutePath());
+								NetManager.saveLog(menuFileParameter.getText());
+              				}
+							
 						} catch (FileNotFoundException e) {
 							e.printStackTrace();
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
-						BuildBottomPane buildBottomPane = new BuildBottomPane();
-						Main.root.setBottom(buildBottomPane.getBottom("Saved file: " + menuFileParameter.getText()));
+						String msg = "Saved to file: " + menuFileParameter.getText();
+						RefreshBottom(msg);
 					}
 					if (((MenuItem)t.getSource()).getId() == CmdEnum.USERSHOWALL.toString()){
 						RefreshRight();
+						String msg = "Showing all users";
+						RefreshBottom(msg);
 					}
 					if (((MenuItem)t.getSource()).getId() == CmdEnum.USERADD.toString()){
 						if (!menuUserParameter.getText().equals("")){
 							NetManager.addUser(menuUserParameter.getText());
 							RefreshRight();
-						}	
-					}
+							String msg = "Added user: " + menuUserParameter.getText();
+							RefreshBottom(msg);
+						}
+						else {
+							RefreshBottom("could not add user " + menuUserParameter.getText());
+						}
+					}	
+
 					if (((MenuItem)t.getSource()).getId() == CmdEnum.USERREMOVE.toString()){
 						if (!menuUserParameter.getText().equals("")){
 							NetManager.removeUser(menuUserParameter.getText());
 							RefreshRight();
+							String msg = "Removed user: " + menuUserParameter.getText();
+							RefreshBottom(msg);
 						}	
 					}
 					if (((MenuItem)t.getSource()).getId() == CmdEnum.CONNECTIONADD.toString()){
 						if (!menuUserParameter.getText().equals("") && !centralUserButton.getId().equals("")){
 							NetManager.addConnection(centralUserButton.getId(),menuUserParameter.getText());
-							RefreshCenter();
+							RefreshCenter(NetManager.getFriends(centralUserButton.getId()),
+							CmdEnum.CONNECTIONADD.toString(), centralUserButton.getId());
+							String msg = "Added connection between " + centralUserButton.getId()+ " and " + menuUserParameter.getText();
+							RefreshBottom(msg);
 						}
 					}
 					
 					if (((MenuItem)t.getSource()).getId() == CmdEnum.CONNECTIONREMOVE.toString()){
 						if (!menuUserParameter.getText().equals("") && !centralUserButton.getId().equals("")){
 							NetManager.removeConnection(centralUserButton.getId(),menuUserParameter.getText());
-							RefreshCenter();
+							RefreshCenter(NetManager.getFriends(centralUserButton.getId()), 
+							CmdEnum.CONNECTIONREMOVE.toString(), centralUserButton.getId());
+							String msg = "Removed connection between " + centralUserButton.getId()+ " and " + menuUserParameter.getText();
+							RefreshBottom(msg);
+						}
+					}
+
+					if (((MenuItem)t.getSource()).getId() == CmdEnum.SHAREDFRIENDS.toString()){
+						if (!menuUserParameter.getText().equals("") && !centralUserButton.getId().equals("")){   
+							RefreshCenter(NetManager.mutualFriends(centralUserButton.getId(), menuUserParameter.getText()), 
+							CmdEnum.SHAREDFRIENDS.toString(), (" " + centralUserButton.getId() + " and " + menuUserParameter.getText()));
+							String msg = "Showing friends between " + centralUserButton.getId()+ " and " + menuUserParameter.getText();
+							RefreshBottom(msg);
+						}
+					}
+
+					if (((MenuItem)t.getSource()).getId() == CmdEnum.SHORTESTPATH.toString()){
+						if (!menuUserParameter.getText().equals("") && !centralUserButton.getId().equals("")){   
+							RefreshCenter(NetManager.getShortestPath(centralUserButton.getId(), menuUserParameter.getText()), 
+							CmdEnum.SHORTESTPATH.toString(), (" from " + centralUserButton.getId() + " to " + menuUserParameter.getText()));
+							String msg = "Showing path between " + centralUserButton.getId()+ " and " + menuUserParameter.getText();
+							RefreshBottom(msg);
 						}
 					}
 					
@@ -201,7 +275,7 @@ public class Main extends Application {
 					String user = tempButton.getId();
 					SetCentralUser(user);
 					NetManager.logCentralUser(user);
-					RefreshCenter();
+					RefreshCenter(NetManager.getFriends(centralUserButton.getId()), "Current Friends", user);
 					}
 				};
 			};
@@ -214,6 +288,35 @@ public class Main extends Application {
 		// save args example
 		args = this.getParameters().getRaw();
 		
+		primaryStage.setOnCloseRequest(event -> {
+			System.out.println("Stage is closing");
+			// Save file
+			try {
+				FileChooser fileChooser = new FileChooser();
+
+				  //Set extension filter
+				  FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+				  fileChooser.getExtensionFilters().add(extFilter);
+				  fileChooser.setTitle("WARNING: clicking CANCEL will exit WITHOUT saving your work.");
+ 
+				  //Show save file dialog
+				  File file = fileChooser.showSaveDialog(new Stage());
+				  
+ 
+				  if(file != null){
+					menuFileParameter.setText(file.getAbsolutePath());
+					NetManager.saveLog(menuFileParameter.getText());
+				  }
+				  else {
+					  System.out.println("Social Network Closed without save, per user CANCEL button click.");
+				  }
+				
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		});
 		
 		// Create a vertical box 
         VBox vbox = new VBox();

@@ -23,32 +23,56 @@ public class BuildCenterPane {
 	RoundButton roundButton = new RoundButton();
 	List<Button> friends = new ArrayList<Button>();
 	ScrollPane centerPane = new ScrollPane(null);
+	String test = CmdEnum.SHORTESTPATH.toString();
 
-	public ScrollPane getPane(List<String> _friends) {
 
-		// this.friends = _friends;
-		if (_friends!=null){
-			
-			for (String frnd : _friends){
-			friends.add(UserButtonFactory.getRoundButton(frnd));
-			}
-		}
-		else {
-			Alert alert = new Alert(AlertType.INFORMATION, "oops List<String> was null", ButtonType.OK);
+	public ScrollPane getPane(List<String> _friends, String _cmd, String centerlabel) {
+		String toplabel = "Friends";
+		if ((centerlabel == null) || (centerlabel == "")) {centerlabel = "Current User";}
+
+		switch(_cmd) {
+			case "CONNECTIONADD" :
+				toplabel="Current Friends";
+			break;
+			case "CONNECTIONREMOVE" :
+				toplabel="Current Friends";
+			  break;
+			case "SHAREDFRIENDS" : 
+			  	toplabel="Shared Friends";
+			  break;
+			case "SHORTESTPATH" :
+			  toplabel="Shortest Path" + centerlabel;
+		  	break;
+			default:
+			  toplabel="Current Friends";
+			break;
+		  }
+
+
+		if (_friends==null){
+			Alert alert = new Alert(AlertType.INFORMATION, "The users are not connected.", ButtonType.OK);
 			alert.showAndWait();
 		}
+		else {
+			if (_friends.size()>0){
+				for (String frnd : _friends){
+					friends.add(UserButtonFactory.getRoundButton(frnd));
+				}
+			}
+		}
     	
+	if (!_cmd.equals(CmdEnum.SHORTESTPATH.toString())){
 		// Create a flow pane for the buttons
 		if (friends.size()<=10){
 			CircularPane friendsFlow = new CircularPane();
 			HBox fHBox = new HBox();
-			fHBox.getChildren().add(new Label("Current Friends"));
+			fHBox.getChildren().add(new Label(toplabel));
 			friendsFlow.getChildren().add(fHBox);
 			for (Button f : friends){
 				friendsFlow.getChildren().add(f);
 			}
 						
-			StackPane stackPane = new StackPane(friendsFlow, new Label(Main.hiddenLabel.getText()));
+			StackPane stackPane = new StackPane(friendsFlow, new Label(centerlabel));
             StackPane.setAlignment(friendsFlow, Pos.CENTER);
 			ScrollPane fScrollPane = new ScrollPane(stackPane);
 			fScrollPane.setFitToWidth(true);
@@ -59,7 +83,7 @@ public class BuildCenterPane {
 			friendsFlow.setVgap(8);
 			friendsFlow.setHgap(4);
 			HBox fHBox = new HBox();
-			fHBox.getChildren().add(new Label("Current Friends"));
+			fHBox.getChildren().add(new Label(toplabel));
 			friendsFlow.getChildren().add(fHBox);
 			for (Button f : friends){
 				friendsFlow.getChildren().add(f);
@@ -68,8 +92,30 @@ public class BuildCenterPane {
 			fScrollPane.setFitToWidth(true);
 			Main.root.setCenter(fScrollPane);
 		}
+	}
+	else {
+		FlowPane friendsFlow = new FlowPane();
+			friendsFlow.setVgap(8);
+			friendsFlow.setHgap(4);
+			
+			HBox fHBox = new HBox();
+			fHBox.getChildren().add(new Label(toplabel + " "));
+			friendsFlow.getChildren().add(fHBox);
+			int i = 0;
+			for (Button f : friends){
+				friendsFlow.getChildren().add(f);
+				if (i < friends.size()-1){
+					Line line = new Line(0,0,35,0);
+					line.setStrokeWidth(6.0);
+      				friendsFlow.getChildren().add(line);
+					i++;
+				}
+			}
+			ScrollPane fScrollPane = new ScrollPane(friendsFlow);
+			fScrollPane.setFitToWidth(true);
+			Main.root.setCenter(fScrollPane);
 
-	
+	}
 	
     return centerPane;
 }
