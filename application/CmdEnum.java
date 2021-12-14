@@ -1,5 +1,12 @@
 package application;
 
+/**
+ * Filename:   CmdEnum.java
+ * Project:    Social Network - A3 Deliverable
+ * Authors:    A-Team 11
+ * 
+ * Enumeration of the command types issued by the menu bar.
+ */
 public enum CmdEnum {
     TBD,
     INIT,
@@ -13,12 +20,3 @@ public enum CmdEnum {
     SHORTESTPATH,
     SHAREDFRIENDS
 }
-
-/*
- * What's the difference between init(tialize)
- * and LOADFILE?
- *  
- * We could just say network initalized with
- * samplefile.txt on start to give the user something
- * to work with 
- */
