@@ -18,6 +18,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
+/**
+ * Filename:   BuildCenterPane.java
+ * Project:    Social Network - A3 Deliverable
+ * Authors:    A-Team 11
+ *
+ * Builds the center pane in the app layout
+ */
+
 public class BuildCenterPane {
 
 	RoundButton roundButton = new RoundButton();
@@ -25,7 +33,14 @@ public class BuildCenterPane {
 	ScrollPane centerPane = new ScrollPane(null);
 	String test = CmdEnum.SHORTESTPATH.toString();
 
-
+	/**
+ 	* method to return a scroll pane based on a list, cmd type, and label
+	*
+ 	* @param _friends
+	* @param _cmd
+	* @param centerlabel
+	* @return ScrollPane
+ 	*/
 	public ScrollPane getPane(List<String> _friends, String _cmd, String centerlabel) {
 		String toplabel = "Friends";
 		if ((centerlabel == null) || (centerlabel == "")) {centerlabel = "Current User";}
