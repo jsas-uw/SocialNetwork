@@ -133,8 +133,8 @@ public class SocialNetMenu {
 		menuHbox.getChildren().add(mb);
         menuHbox.getChildren().add(new Label("\t"+"user: "));
         menuHbox.getChildren().add(userParameter);
-        menuHbox.getChildren().add(new Label("\t"+"file: "));
-        menuHbox.getChildren().add(fileParameter);
+        // menuHbox.getChildren().add(new Label("\t"+"file: "));
+        // menuHbox.getChildren().add(fileParameter);
         
         return menuHbox;
         
