@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.event.MenuEvent;
 
@@ -214,7 +216,7 @@ public class Main extends Application {
 						RefreshBottom(msg);
 					}
 					if (((MenuItem)t.getSource()).getId() == CmdEnum.USERADD.toString()){
-						if (!menuUserParameter.getText().equals("") && validUserInput(menuUserParameter.getText()){
+						if (!menuUserParameter.getText().equals("") && validUserInput(menuUserParameter.getText())){
 							NetManager.addUser(menuUserParameter.getText());
 							RefreshRight();
 							String msg = "Added user: " + menuUserParameter.getText();
@@ -226,7 +228,7 @@ public class Main extends Application {
 					}
 
 					if (((MenuItem)t.getSource()).getId() == CmdEnum.USERREMOVE.toString()){
-						if (!menuUserParameter.getText().equals("") && validUserInput(menuUserParameter.getText()){
+						if (!menuUserParameter.getText().equals("") && validUserInput(menuUserParameter.getText())){
 							NetManager.removeUser(menuUserParameter.getText());
 							RefreshRight();
 							String msg = "Removed user: " + menuUserParameter.getText();
@@ -236,7 +238,7 @@ public class Main extends Application {
 							RefreshBottom("could not remove user " + menuUserParameter.getText());
 					}
 					if (((MenuItem)t.getSource()).getId() == CmdEnum.CONNECTIONADD.toString()){
-						if (!menuUserParameter.getText().equals("") && !centralUserButton.getId().equals("") && validUserInput(menuUserParameter.getText()){
+						if (!menuUserParameter.getText().equals("") && !centralUserButton.getId().equals("") && validUserInput(menuUserParameter.getText())){
 							NetManager.addConnection(centralUserButton.getId(),menuUserParameter.getText());
 							RefreshCenter(NetManager.getFriends(centralUserButton.getId()),
 							CmdEnum.CONNECTIONADD.toString(), centralUserButton.getId());
@@ -246,7 +248,7 @@ public class Main extends Application {
 					}
 
 					if (((MenuItem)t.getSource()).getId() == CmdEnum.CONNECTIONREMOVE.toString()){
-						if (!menuUserParameter.getText().equals("") && !centralUserButton.getId().equals("") && validUserInput(menuUserParameter.getText()){
+						if (!menuUserParameter.getText().equals("") && !centralUserButton.getId().equals("") && validUserInput(menuUserParameter.getText())){
 							NetManager.removeConnection(centralUserButton.getId(),menuUserParameter.getText());
 							RefreshCenter(NetManager.getFriends(centralUserButton.getId()),
 							CmdEnum.CONNECTIONREMOVE.toString(), centralUserButton.getId());
