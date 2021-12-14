@@ -41,6 +41,14 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
+/**
+ * Filename:   Main.java
+ * Project:    Social Network - A3 Deliverable
+ * Authors:    A-Team 11
+ * 
+ * Entry point to the application
+ */
+
 public class Main extends Application {
 	// store any command-line arguments that were entered.
 	// NOTE: this.getParameters().getRaw() will get these also
@@ -329,7 +337,8 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		// save args example
 		args = this.getParameters().getRaw();
-
+		
+		// intercepts the application close (pressing "X") to allow a chance to save or exit without save
 		primaryStage.setOnCloseRequest(event -> {
 			System.out.println("Stage is closing");
 			// Save file
