@@ -13,7 +13,16 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 
-
+/**
+ * Filename:   UserButtonFactory.java
+ * Project:    Social Network - A3 Deliverable
+ * Authors:    A-Team 11
+ * 
+ * Factory for creating a cache of buttons, as they are needed.
+ * Buttons are maintained for later use in a Global HashMap.
+ * Key methods used from the HashMap are .getOrDefault(s, newRoundButton(s)) and .putIfAbsent(s, roundButton) 
+ * Saves on boiler plate
+ */
 public class UserButtonFactory {
 
     public UserButtonFactory(){
