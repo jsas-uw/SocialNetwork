@@ -381,4 +381,17 @@ public class SocialNetworkManager {
     	Collections.reverse(order);
     	return order;
     }
+	
+    /**
+     * added getters for graph size and order
+     * these get displayed in the bottom pane
+     * and are set by the updateStats method
+     */
+    public int getSize() {
+    	return graph.size();
+    }
+    
+    public int getOrder() {
+    	return graph.order();
+    }
 }
