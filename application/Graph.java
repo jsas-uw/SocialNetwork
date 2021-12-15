@@ -7,11 +7,8 @@ import java.util.TreeSet;
 import java.util.LinkedList;
 
 /**
- * Filename:   Graph.java
- * Project:    p4
- * Authors:    John Sas
- * 
  * Directed and unweighted graph implementation
+ * based on the graph class from p4
  */
 
 public class Graph implements GraphADT {
@@ -20,9 +17,10 @@ public class Graph implements GraphADT {
 	private int order;
 	//order is number of vertices
 	
-	//this was arbitrary
-	//could be a tree, hash table
+	//could use a tree, hash table
 	//both Arraylists, both linkedLists, ect
+	//Using a tree or hash table would improve 
+	//pefromance
 	ArrayList<LinkedList<String>> graphNodes;
 		
 	/**
@@ -47,7 +45,7 @@ public class Graph implements GraphADT {
 	 * modify the number of edges
 	 */
 	
-	/**
+    /**
      * Add new vertex to the graph.
      *
      * If vertex is null or already exists,
