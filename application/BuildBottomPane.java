@@ -5,6 +5,19 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class BuildBottomPane {
+	
+	
+	private int users;
+	private int connections;
+	
+	/**
+	 * Sets size and order from the graph
+	 */
+	public void updateStats(int size, int order) {
+		users = order;
+		connections = size;
+	}
+	
 	/**
 	 * Bottom pane is a VBox and has two parts: 
 	 * First the status message is displayed to the user 
@@ -13,15 +26,6 @@ public class BuildBottomPane {
 	 * @param String statusMsg
 	 * @return Vbox bottomVBox
 	 */
-	
-	private int users;
-	private int connections;
-	
-	public void updateStats(int size, int order) {
-		users = order;
-		connections = size;
-	}
-	
 	public VBox getBottom(String statusMsg) {
 		//adds directly to the vbox
 		Label statusLabel = new Label(statusMsg);
